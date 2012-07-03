@@ -45,7 +45,9 @@ sub init {
 
   $self->application->register_action($self, 'check_project_name', 'check_project_name');
   $self->application->register_action($self, 'validate_metadata', 'validate_metadata');
+  $self->application->register_action($self, 'submit_to_vamps', 'submit_to_vamps');
   $self->application->register_action($self, 'submit_to_mgrast', 'submit_to_mgrast');
+  $self->application->register_action($self, 'submit_to_qiime', 'submit_to_qiime');
   $self->application->register_action($self, 'generate_webkey', 'generate_webkey');
 
   $self->application->register_component('Table', 'sequence_table');
@@ -80,10 +82,34 @@ sub output {
       <div>~;
 
   if ($cgi->param('create_job')) {
-    my $success = $self->submit_to_mgrast();
-    if ($success && @$success) {
-      $html .= "<div class='well'><h4>Job submission successful</h4><p>Your data has been successfully submitted to the pipeline. You can view the status of your submitted jobs <a href='?page=MetagenomeSelect'>here</a> and click on the number next to 'In Progress'.</p><p>Your mobedac IDs: ".join(", ", @$success)."</p></div>";
+    $html .= "<div class='well'>";
+    my $silent = $cgi->param('MGRAST') ? 0 : 1;
+    my ($success, $libraries) = $self->submit_to_mgrast($silent);
+    if (! $silent) {
+      if ($success) {
+	$html .= "<h4>Job submission to MG-RAST successful</h4>";
+      } else {
+	$html .= "<h4>Job submission to MG-RAST failed</h4>";
+      }
     }
+    if ($cgi->param('VAMPS')) {
+      my $success = $self->submit_to_vamps($libraries);
+      if ($success) {
+	$html .= "<h4>Job submission to VAMPS successful</h4>";
+      } else {
+	$html .= "<h4>Job submission to VAMPS failed</h4>";	
+      }
+    }
+    if ($cgi->param('QIIME')) {
+      my $success = $self->submit_to_qiime($libraries);
+      if ($success) {
+	$html .= "<h4>Job submission to QIIME successful</h4>";
+      } else {
+	$html .= "<h4>Job submission to QIIME failed</h4>";	
+      }
+    }
+
+    $html .= "</div><p>You can view the status of your submitted jobs <a href='?page=SubmissionStatus'>here</a>.</p>";
   }
 
   my $user_project_ids = $user->has_right_to(undef, "edit", "project");
@@ -97,10 +123,10 @@ sub output {
   }
   my $template_link = "ftp://".$FIG_Config::ftp_download."/data/misc/metadata/".$FIG_Config::mgrast_metadata_template;
   $html .= qq~
-<div class="well" style='width: 630px; float: left;'><h3>using the new mobedac uploader:</h3>
+<div class="well" style='width: 630px; float: left;'><h3>using the new MoBEDAC uploader:</h3>
 <p>The new data uploader and submission site provides a more convenient way to upload and process your data! You can upload all of your sequence files and metadata at once and have the files modified and validated before submitting.</p>
 
-<p>In short, use <b>Prepare Data</b> to upload any fasta, fastq or SFF files and GSC MIxS compliant metadata files into your inbox. While metadata is not required at submission, the priority for processing data without metadata is lower. Metadata can be modified on the project page after submission. The inbox is a temporary storage location allowing you to assemble all files required for submission. After manipulate the files in your inbox, use <b>Data Submission</b> to create and add to existing projects. When the submission process has been successfully completed, mobedac ID's ("Accession numbers") will be automatically assigned and the data will be removed from your inbox.<p>
+<p>In short, use <b>Prepare Data</b> to upload any fasta, fastq or SFF files and GSC MIxS compliant metadata files into your inbox. While metadata is not required at submission, the priority for processing data without metadata is lower. Metadata can be modified on the project page after submission. The inbox is a temporary storage location allowing you to assemble all files required for submission. After manipulate the files in your inbox, use <b>Data Submission</b> to create and add to existing projects. When the submission process has been successfully completed, MoBEDAC ID's ("Accession numbers") will be automatically assigned and the data will be removed from your inbox.<p>
 
 <p>You can monitor the progress of your jobs in the My Data Summary, on the Browse Metagenomes page.</p>
 <p>Questions? Check out our <a href='http://blog.metagenomics.anl.gov/upload-data-v3-2/' target='blank'>tutorial and instructional videos</a>. Still having trouble? <a href="mailto:help\@mobedac.org?subject=[MoBEDAC]">Email us!</a></p>
@@ -132,9 +158,9 @@ sub output {
 	      <div id="sel_mddownload_div" style="display: none;" class="well">
                  <h3>download metadata spreadsheet template</h3>
 <p>Metadata (or data about the data) has become a necessity as the community generates large quantities of data sets.</p>
-	         <p>Using community generated questionnaires we capture this metadata. mobedac has implemented the use of <a href='http://gensc.org/gc_wiki/index.php/MIxS' target=_blank>Minimum Information about any (X) Sequence</a> developed by the <a href='http://gensc.org' target=_blank >Genomic Standards Consortium</a> (GSC).</p>
+	         <p>Using community generated questionnaires we capture this metadata. MoBEDAC has implemented the use of <a href='http://gensc.org/gc_wiki/index.php/MIxS' target=_blank>Minimum Information about any (X) Sequence</a> developed by the <a href='http://gensc.org' target=_blank >Genomic Standards Consortium</a> (GSC).</p>
 <p>The best form to capture metadata is via a simple spreadsheet with 12 mandatory terms. You can download the spreadsheet file here, fill in the required data fields later upload it to your inbox.</p>
-<p>While the MIxS required data fields capture only the most minimal metadata, many areas of study have chosen to require more elaborate questionnaires ("environmental packages") to help with analysis and comparison. These are marked as optional in the spreadsheet. If the "environmental package" for your area of study has not been created yet, please <a href="help\@mobedac.org?subject=[MoBEDAC]">contact mobedac staff</a> and we will forward your inquiry to the appropriate GSC working group.</p>
+<p>While the MIxS required data fields capture only the most minimal metadata, many areas of study have chosen to require more elaborate questionnaires ("environmental packages") to help with analysis and comparison. These are marked as optional in the spreadsheet. If the "environmental package" for your area of study has not been created yet, please <a href="help\@mobedac.org?subject=[MoBEDAC]">contact MoBEDAC staff</a> and we will forward your inquiry to the appropriate GSC working group.</p>
 <p>Once you have filled out the template, you can upload it below and it will be validated and appear in the metadata selection section.</p>
                  <p><a href="$template_link"><img title="download metadata spreadsheet template" style="width: 20px; height: 20px;" src="./Html/mg-download.png"> download metadata spreadsheet template</a></p>
               </div>
@@ -222,7 +248,7 @@ sub output {
                  <div id="sel_mdfile_div" style='float:left;'></div><div style='float:left; margin-top: 25px; width: 350px;'><p>Select a spreadsheet with metadata for the project you want to submit. Uploaded spreedsheets will appear here after successful validation.</p><p><b>Note: While metadata is not required at submission, the priority for processing data without metadata is lower.</b></p></div><div class='clear'></div>
               </div>
 	      <li><a onclick="toggle('sel_project_div');" class="pill_incomplete" id="sel_project_pill" style="font-size: 17px; font-weight: bold;">2. select project <i id="icon_step_2" class="icon-ok icon-white" style="display: none;"></i></a></li>
-              <div id="sel_project_div" class="well" style="display: none;"><h3>select a project</h3><p>You have to specify a project to upload a job to mobedac. If you have a metadata file, the project must be specified in that file. If you choose to not use a metadata file, you can select a project here. You can either select an existing project or you can choose a new project.</p><select name="project" style="width: 420px; margin-bottom: 20px;" onchange="if(this.selectedIndex>0){document.getElementById('new_project').value='';document.getElementById('new_project').disabled=true;}else{document.getElementById('new_project').disabled=false;}" id='project'><option value=''>- new -</option>~;
+              <div id="sel_project_div" class="well" style="display: none;"><h3>select a project</h3><p>You have to specify a project to upload a job to MoBEDAC. If you have a metadata file, the project must be specified in that file. If you choose to not use a metadata file, you can select a project here. You can either select an existing project or you can choose a new project.</p><select name="project" style="width: 420px; margin-bottom: 20px;" onchange="if(this.selectedIndex>0){document.getElementById('new_project').value='';document.getElementById('new_project').disabled=true;}else{document.getElementById('new_project').disabled=false;}" id='project'><option value=''>- new -</option>~;
   foreach my $project (@$projects) {
     next unless ($project->{name});
     $html .= "<option value='".$project->{id}."'>".$project->{name}."</option>";
@@ -347,7 +373,7 @@ sub output {
 <p>Data will be private (only visible to the submitter) unless you choose to share it with other users or make it public. If you decide to make data public your data will be given priority for the computational queue.</p>
 
 <div style='margin-bottom: 20px;'><input type="button" class="btn" value="submit job" onclick="submit_job();" disabled id="submit_job_button"><span style='margin-left: 20px;'><b>Note: You must complete all previous steps to enable submission.</b></span></div>
-<p>Upon successful submission mobedac ID's ("Accession numbers") will be automatically assigned and data files will be removed from your inbox. Progress through the system can be viewed via the <a href="metagenomics.cgi?page=MetagenomeSelect" target='blank'>Browse page <img title="Browse" style="width: 20px; height: 20px;" src="./Html/mgrast_globe.png"></a>.</p>
+<p>Upon successful submission MoBEDAC ID's ("Accession numbers") will be automatically assigned and data files will be removed from your inbox. Progress through the system can be viewed via the <a href="metagenomics.cgi?page=MetagenomeSelect" target='blank'>Browse page <img title="Browse" style="width: 20px; height: 20px;" src="./Html/mgrast_globe.png"></a>.</p>
 </div>
 	    </ul>
 	  </div>
@@ -371,6 +397,95 @@ sub require_css {
   return [ "$FIG_Config::cgi_url/Html/bootstrap-responsive.min.css",
 	   "$FIG_Config::cgi_url/Html/bootstrap.min.css",
 	   "$FIG_Config::cgi_url/Html/Upload.css" ];
+}
+
+sub submit_to_qiime {
+  my ($self, $jdata) = @_;
+
+  my $cgi = $self->application->cgi;
+
+  if ($cgi->param('test')) {
+    $jdata = [ '4608' ];
+  }
+  
+  unless (ref($jdata) && scalar(@$jdata)) {
+    return 0;
+  }
+
+  my $json = new JSON;
+  $json = $json->utf8();
+
+  my $jobdata = { 'analysis_system' => 'QIIME',
+		  'analysis_params' => { 'user' => 'mobedac',
+					 'auth' => 'TkzmLuiSuwQEhivEveZ7tvYiB' },
+		  "library_ids" => $jdata
+		};
+
+  my $content = $json->encode($jobdata);
+  my $len = length($content);
+  
+  my $ua = LWP::UserAgent->new;
+  my $response = $ua->post('http://microbio.me/r/project', Content => encode("iso-8859-1", $content))->as_string;
+
+  if ($cgi->param('test')) {
+    $self->application->add_message('info', "<br><b>request sent</b><br>'POST', 'http://microbio.me/r/project',".encode("iso-8859-1", $content)."<br><br><b>response received</b><br>".$response);
+  }
+
+  return $response;
+}
+
+sub submit_to_vamps {
+  my ($self, $jdata) = @_;
+
+  my $cgi = $self->application->cgi;
+
+  if ($cgi->param('test')) {
+    $jdata = [ '1578' ];
+  }
+  
+  unless (ref($jdata) && scalar(@$jdata)) {
+    return 0;
+  }
+
+  my $json = new JSON;
+  $json = $json->utf8();
+
+  my $jobdata = { 'analysis_system' => 'VAMPS',
+		  'analysis_params' => { 'user' => 'mobedac',
+					 'vamps_user' => $cgi->param('vamps_username'),
+					 'auth' => 'TkzmLuiSuwQEhivEveZ7tvYiB' },
+		  "library_ids" => $jdata
+		};
+
+  my $content = $json->encode($jobdata);
+  my $len = length($content);
+  
+  my $ua = LWP::UserAgent->new;
+  my $req = HTTP::Request->new( 'POST', 'http://vamps.mbl.edu/mobedac_ws/submission', [ "Content-Type", "text/plain", "Content-Length", $len ], encode("iso-8859-1", $content) );
+  
+  my $response = $ua->request($req)->as_string;
+
+  if ($cgi->param('test')) {
+    $self->application->add_message('info', "<br><b>request sent</b><br>'POST', 'http://vamps.mbl.edu/mobedac_ws/submission', [ 'Content-Type', 'text/plain', 'Content-Length', $len ], ".encode("iso-8859-1", $content)."<br><br><b>response received</b><br>".$response);
+  }
+
+  return $response;
+}
+
+sub vamps_status {
+  my ($self, $ids) = @_;
+
+  my $json = new JSON;
+  $json = $json->utf8();
+
+  my $stati = {};
+  foreach my $id (@$ids) {
+    my $ua = LWP::UserAgent->new;
+    my $req = HTTP::Request->new( 'GET', 'http://vamps.mbl.edu/mobedac_ws/submission/'.$id );    
+    my $response = $ua->request($req)->as_string;
+    $stati->{$id} = $json->decode($response);
+  }
+  return $stati;
 }
 
 sub submit_to_mgrast {
@@ -506,7 +621,7 @@ sub submit_to_mgrast {
   # check if sequence file already has a job
   foreach my $seqfile (@$seqfiles) {
     if ($jobdbm->Job->has_checksum($infos->{$seqfile}{file_checksum}, $user)) {
-      $self->application->add_message('warning', "A job already exists in mobedac for file $seqfile, aborting submission.");
+      $self->application->add_message('warning', "A job already exists in MoBEDAC for file $seqfile, aborting submission.");
       return undef;
     }
   }
