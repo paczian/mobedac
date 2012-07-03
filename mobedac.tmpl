@@ -1,0 +1,51 @@
+<body onload='initialize_all();'>
+  
+  <div id="header"><a href="?page=Home" style="border: none;">
+    <img style="float: left; 
+		height: 120px; 
+		margin-left: 40px;
+		margin-top: 10px;" 
+	 src="./Html/mobedac_logo.jpg" alt="MoBEDAC logo" />
+    </a><span style="font-size: 75px; font-family: Arial;">MoBEDAC</span><br>
+<span style="font-size: 15px; font-family: Arial;">Microbiome of the Built Environment Data Analysis Core</span>
+</div>
+
+  <div id="minimenu"><div><a href="?page=Home">Home</a></div><div><a href="?page=Browse">Browse</a></div><div><a href="?page=Search">Search</a></div><div><a href="?page=Upload">Upload</a></div><div><a href="?page=SubmissionStatus">Status</a></div><div><a href="?page=Download">Download</a></div><div><a href="?page=About">About</a></div><div style='width: 200px;'><form><a id='search_title' style='padding-right: 4px;'>Quicksearch</a><input type='hidden' name='page' value='Search'><input type='text' name='init_search' style='width: 90px; height: 19px; position: relative; top: -2px;'></form></div></div>
+
+  <div id="login">
+    <TMPL_IF NAME="USER">
+      <TMPL_VAR NAME="USER">
+    </TMPL_IF>
+  </div>
+
+  <div id="content">
+    <TMPL_IF NAME="WARNINGS">
+      <div id="warning">
+	<TMPL_LOOP NAME="WARNINGS">
+	  <p class="warning"> <strong> Warning: </strong> <TMPL_VAR NAME="MSG"> </p>
+	</TMPL_LOOP>
+      </div>
+    </TMPL_IF>
+    
+    <TMPL_IF NAME="INFO">
+      <div id="info">
+	<TMPL_LOOP NAME="INFO">
+	  <p class="info"> <strong> Info: </strong> <TMPL_VAR NAME="MSG"> </p>
+	</TMPL_LOOP>
+      </div>
+    </TMPL_IF>
+      <br><br>
+      <TMPL_VAR NAME="CONTENT">
+	<div style="font-size: 10px; float: right;">funded by the<br><a target=_blank href="http://www.sloan.org"><img src="./Html/sloan_logo.png" style="height: 70px;" /></a></div>
+	<script type="text/javascript">
+	  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+	  try {
+	  var pageTracker = _gat._getTracker("UA-8339940-1");
+	  pageTracker._trackPageview();
+	  } catch(err) {}
+	</script>
+  </div>
+</body>
