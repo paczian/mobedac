@@ -444,7 +444,7 @@ sub submit_to_vamps {
   my $cgi = $self->application->cgi;
 
   if ($cgi->param('test')) {
-    $jdata = [ '1578' ];
+    $jdata = [ 'mgl62790' ];
   }
   
   unless (ref($jdata) && scalar(@$jdata)) {
