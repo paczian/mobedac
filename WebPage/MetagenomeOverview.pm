@@ -182,6 +182,11 @@ sub output {
     $html .= "</ul></div></p><p><div style='display:none;' id='edit_name_div'>".$self->edit_name_info($job)."</div></p>";
   }
 
+  my $vamps_link = "This metagenome has not yet been analyzed by VAMPS";
+  my $qiime_link = "This metagenome has not yet been analyzed by QIIME";
+
+  $html .= "<h2>View Analysis Results</h2><table><tr><td><b>MG-RAST</b></td><td><a href='http://metagenomics.anl.gov/linkin.cgi?metagenome=$mgid' target=_blank></td></tr><tr><td><b>VAMPS</b></td><td>$vamps_link</td></tr><tr><td><b>QIIME</b></td><td>$qiime_link></td></tr></table>";
+
 #   # get job stats
 #   my $job_dt      = DateTime->from_epoch( epoch => str2time($job->created_on) );
 #   my $job_stats   = $job->stats();
