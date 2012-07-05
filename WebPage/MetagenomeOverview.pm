@@ -176,634 +176,633 @@ sub output {
   } else {
     document.getElementById("edit_name_div").style.display = "none";
   }'>Edit Name</a></li>~;
-    #$html .= "<li><a target=_blank href='?page=MetaDataMG&metagenome=$mgid'>Edit Metadata</a></li>";
     unless ($job->public) {
       $html .= "<li><a target=_blank href='?page=PublishGenome&metagenome=$mgid'>Make Public</a></li>";
     }
     $html .= "</ul></div></p><p><div style='display:none;' id='edit_name_div'>".$self->edit_name_info($job)."</div></p>";
   }
 
-  # get job stats
-  my $job_dt      = DateTime->from_epoch( epoch => str2time($job->created_on) );
-  my $job_stats   = $job->stats();
-  my $raw_bps     = exists($job_stats->{bp_count_raw}) ? $job_stats->{bp_count_raw} : 0;
-  my $qc_rna_bps  = exists($job_stats->{bp_count_preprocessed_rna}) ? $job_stats->{bp_count_preprocessed_rna} : 0;
-  my $qc_bps      = exists($job_stats->{bp_count_preprocessed}) ? $job_stats->{bp_count_preprocessed} : 0;
-  my $raw_seqs    = exists($job_stats->{sequence_count_raw}) ? $job_stats->{sequence_count_raw} : 0;
-  my $derep_seqs  = exists($job_stats->{sequence_count_dereplication_removed}) ? $job_stats->{sequence_count_dereplication_removed} : 0;
-  my $qc_rna_seqs = exists($job_stats->{sequence_count_preprocessed_rna}) ? $job_stats->{sequence_count_preprocessed_rna} : 0;
-  my $qc_seqs     = exists($job_stats->{sequence_count_preprocessed}) ? $job_stats->{sequence_count_preprocessed} : 0;
-  my $raw_len_avg = exists($job_stats->{average_length_raw}) ? $job_stats->{average_length_raw} : 0;
-  my $qc_rna_len_avg = exists($job_stats->{average_length_preprocessed_rna}) ? $job_stats->{average_length_preprocessed_rna} : 0;
-  my $qc_len_avg  = exists($job_stats->{average_length_preprocessed}) ? $job_stats->{average_length_preprocessed} : 0;
-  my $raw_len_std = exists($job_stats->{standard_deviation_length_raw}) ? $job_stats->{standard_deviation_length_raw} : 0;
-  my $qc_rna_len_std = exists($job_stats->{standard_deviation_length_preprocessed_rna}) ? $job_stats->{standard_deviation_length_preprocessed_rna} : 0;
-  my $qc_len_std  = exists($job_stats->{standard_deviation_length_preprocessed}) ? $job_stats->{standard_deviation_length_preprocessed} : 0;
-  my $raw_gc_avg  = exists($job_stats->{average_gc_content_raw}) ? $job_stats->{average_gc_content_raw} : 0;
-  my $qc_rna_gc_avg = exists($job_stats->{average_gc_content_preprocessed_rna}) ? $job_stats->{average_gc_content_preprocessed_rna} : 0;
-  my $qc_gc_avg   = exists($job_stats->{average_gc_content_preprocessed}) ? $job_stats->{average_gc_content_preprocessed} : 0;
-  my $raw_gc_std  = exists($job_stats->{standard_deviation_gc_content_raw}) ? $job_stats->{standard_deviation_gc_content_raw} : 0;
-  my $qc_rna_gc_std = exists($job_stats->{standard_deviation_gc_content_preprocessed_rna}) ? $job_stats->{standard_deviation_gc_content_preprocessed_rna} : 0;
-  my $qc_gc_std   = exists($job_stats->{standard_deviation_gc_content_preprocessed}) ? $job_stats->{standard_deviation_gc_content_preprocessed} : 0;
-  my $r_clusts    = exists($job_stats->{cluster_count_processed_rna}) ? $job_stats->{cluster_count_processed_rna} : 0;
-  my $r_clust_seq = exists($job_stats->{clustered_sequence_count_processed_rna}) ? $job_stats->{clustered_sequence_count_processed_rna} : 0;
-  my $aa_reads    = exists($job_stats->{read_count_processed_aa}) ? $job_stats->{read_count_processed_aa} : 0;
-  my $rna_reads   = exists($job_stats->{read_count_processed_rna}) ? $job_stats->{read_count_processed_rna} : 0;
-  my $aa_feats    = exists($job_stats->{sequence_count_processed_aa}) ? $job_stats->{sequence_count_processed_aa} : 0;
-  my $rna_feats   = exists($job_stats->{sequence_count_processed_rna}) ? $job_stats->{sequence_count_processed_rna} : 0;
-  my $aa_sims     = exists($job_stats->{sequence_count_sims_aa}) ? $job_stats->{sequence_count_sims_aa} : 0;
-  my $rna_sims    = exists($job_stats->{sequence_count_sims_rna}) ? $job_stats->{sequence_count_sims_rna} : 0;
-  my $aa_ontol    = exists($job_stats->{sequence_count_ontology}) ? $job_stats->{sequence_count_ontology} : 0;
-  my $ann_reads   = exists($job_stats->{read_count_annotated}) ? $job_stats->{read_count_annotated} : 0;
-  my $alpha_num   = exists($job_stats->{alpha_diversity_shannon}) ? $job_stats->{alpha_diversity_shannon} : 0;
-  my $drisee_num  = exists($job_stats->{drisee_score_raw}) ? $job_stats->{drisee_score_raw} : 0;
+#   # get job stats
+#   my $job_dt      = DateTime->from_epoch( epoch => str2time($job->created_on) );
+#   my $job_stats   = $job->stats();
+#   my $raw_bps     = exists($job_stats->{bp_count_raw}) ? $job_stats->{bp_count_raw} : 0;
+#   my $qc_rna_bps  = exists($job_stats->{bp_count_preprocessed_rna}) ? $job_stats->{bp_count_preprocessed_rna} : 0;
+#   my $qc_bps      = exists($job_stats->{bp_count_preprocessed}) ? $job_stats->{bp_count_preprocessed} : 0;
+#   my $raw_seqs    = exists($job_stats->{sequence_count_raw}) ? $job_stats->{sequence_count_raw} : 0;
+#   my $derep_seqs  = exists($job_stats->{sequence_count_dereplication_removed}) ? $job_stats->{sequence_count_dereplication_removed} : 0;
+#   my $qc_rna_seqs = exists($job_stats->{sequence_count_preprocessed_rna}) ? $job_stats->{sequence_count_preprocessed_rna} : 0;
+#   my $qc_seqs     = exists($job_stats->{sequence_count_preprocessed}) ? $job_stats->{sequence_count_preprocessed} : 0;
+#   my $raw_len_avg = exists($job_stats->{average_length_raw}) ? $job_stats->{average_length_raw} : 0;
+#   my $qc_rna_len_avg = exists($job_stats->{average_length_preprocessed_rna}) ? $job_stats->{average_length_preprocessed_rna} : 0;
+#   my $qc_len_avg  = exists($job_stats->{average_length_preprocessed}) ? $job_stats->{average_length_preprocessed} : 0;
+#   my $raw_len_std = exists($job_stats->{standard_deviation_length_raw}) ? $job_stats->{standard_deviation_length_raw} : 0;
+#   my $qc_rna_len_std = exists($job_stats->{standard_deviation_length_preprocessed_rna}) ? $job_stats->{standard_deviation_length_preprocessed_rna} : 0;
+#   my $qc_len_std  = exists($job_stats->{standard_deviation_length_preprocessed}) ? $job_stats->{standard_deviation_length_preprocessed} : 0;
+#   my $raw_gc_avg  = exists($job_stats->{average_gc_content_raw}) ? $job_stats->{average_gc_content_raw} : 0;
+#   my $qc_rna_gc_avg = exists($job_stats->{average_gc_content_preprocessed_rna}) ? $job_stats->{average_gc_content_preprocessed_rna} : 0;
+#   my $qc_gc_avg   = exists($job_stats->{average_gc_content_preprocessed}) ? $job_stats->{average_gc_content_preprocessed} : 0;
+#   my $raw_gc_std  = exists($job_stats->{standard_deviation_gc_content_raw}) ? $job_stats->{standard_deviation_gc_content_raw} : 0;
+#   my $qc_rna_gc_std = exists($job_stats->{standard_deviation_gc_content_preprocessed_rna}) ? $job_stats->{standard_deviation_gc_content_preprocessed_rna} : 0;
+#   my $qc_gc_std   = exists($job_stats->{standard_deviation_gc_content_preprocessed}) ? $job_stats->{standard_deviation_gc_content_preprocessed} : 0;
+#   my $r_clusts    = exists($job_stats->{cluster_count_processed_rna}) ? $job_stats->{cluster_count_processed_rna} : 0;
+#   my $r_clust_seq = exists($job_stats->{clustered_sequence_count_processed_rna}) ? $job_stats->{clustered_sequence_count_processed_rna} : 0;
+#   my $aa_reads    = exists($job_stats->{read_count_processed_aa}) ? $job_stats->{read_count_processed_aa} : 0;
+#   my $rna_reads   = exists($job_stats->{read_count_processed_rna}) ? $job_stats->{read_count_processed_rna} : 0;
+#   my $aa_feats    = exists($job_stats->{sequence_count_processed_aa}) ? $job_stats->{sequence_count_processed_aa} : 0;
+#   my $rna_feats   = exists($job_stats->{sequence_count_processed_rna}) ? $job_stats->{sequence_count_processed_rna} : 0;
+#   my $aa_sims     = exists($job_stats->{sequence_count_sims_aa}) ? $job_stats->{sequence_count_sims_aa} : 0;
+#   my $rna_sims    = exists($job_stats->{sequence_count_sims_rna}) ? $job_stats->{sequence_count_sims_rna} : 0;
+#   my $aa_ontol    = exists($job_stats->{sequence_count_ontology}) ? $job_stats->{sequence_count_ontology} : 0;
+#   my $ann_reads   = exists($job_stats->{read_count_annotated}) ? $job_stats->{read_count_annotated} : 0;
+#   my $alpha_num   = exists($job_stats->{alpha_diversity_shannon}) ? $job_stats->{alpha_diversity_shannon} : 0;
+#   my $drisee_num  = exists($job_stats->{drisee_score_raw}) ? $job_stats->{drisee_score_raw} : 0;
 
-  my $is_rna = ($md_seq_type =~ /amplicon/i) ? 1 : 0;
-  my $qc_fail_seqs  = $raw_seqs - $qc_seqs;
-  my $ann_rna_reads = $rna_sims ? ($rna_sims - $r_clusts) + $r_clust_seq : 0;
-  my $ann_aa_reads  = ($ann_reads && ($ann_reads > $ann_rna_reads)) ? $ann_reads - $ann_rna_reads : 0;
-  my $unkn_aa_reads = $aa_reads - $ann_aa_reads;
-  my $unknown_all   = $raw_seqs - ($qc_fail_seqs + $unkn_aa_reads + $ann_aa_reads + $ann_rna_reads);
+#   my $is_rna = ($md_seq_type =~ /amplicon/i) ? 1 : 0;
+#   my $qc_fail_seqs  = $raw_seqs - $qc_seqs;
+#   my $ann_rna_reads = $rna_sims ? ($rna_sims - $r_clusts) + $r_clust_seq : 0;
+#   my $ann_aa_reads  = ($ann_reads && ($ann_reads > $ann_rna_reads)) ? $ann_reads - $ann_rna_reads : 0;
+#   my $unkn_aa_reads = $aa_reads - $ann_aa_reads;
+#   my $unknown_all   = $raw_seqs - ($qc_fail_seqs + $unkn_aa_reads + $ann_aa_reads + $ann_rna_reads);
 
-  if ($is_rna) {
-    $qc_fail_seqs  = $raw_seqs - $qc_rna_seqs;
-    $unkn_aa_reads = 0;
-    $ann_aa_reads  = 0;
-    $unknown_all   = $raw_seqs - ($qc_fail_seqs + $ann_rna_reads);
-  } else {
-      if ($unknown_all < 0) { $unknown_all = 0; }
-      if ($raw_seqs < ($qc_fail_seqs + $unknown_all + $unkn_aa_reads + $ann_aa_reads + $ann_rna_reads)) {
-	my $diff = ($qc_fail_seqs + $unknown_all + $unkn_aa_reads + $ann_aa_reads + $ann_rna_reads) - $raw_seqs;
-	$unknown_all = ($diff > $unknown_all) ? 0 : $unknown_all - $diff;
-      }
-      if (($unknown_all == 0) && ($raw_seqs < ($qc_fail_seqs + $unkn_aa_reads + $ann_aa_reads + $ann_rna_reads))) {
-	my $diff = ($qc_fail_seqs + $unkn_aa_reads + $ann_aa_reads + $ann_rna_reads) - $raw_seqs;
-	$unkn_aa_reads = ($diff > $unkn_aa_reads) ? 0 : $unkn_aa_reads - $diff;
-      }
-  }
+#   if ($is_rna) {
+#     $qc_fail_seqs  = $raw_seqs - $qc_rna_seqs;
+#     $unkn_aa_reads = 0;
+#     $ann_aa_reads  = 0;
+#     $unknown_all   = $raw_seqs - ($qc_fail_seqs + $ann_rna_reads);
+#   } else {
+#       if ($unknown_all < 0) { $unknown_all = 0; }
+#       if ($raw_seqs < ($qc_fail_seqs + $unknown_all + $unkn_aa_reads + $ann_aa_reads + $ann_rna_reads)) {
+# 	my $diff = ($qc_fail_seqs + $unknown_all + $unkn_aa_reads + $ann_aa_reads + $ann_rna_reads) - $raw_seqs;
+# 	$unknown_all = ($diff > $unknown_all) ? 0 : $unknown_all - $diff;
+#       }
+#       if (($unknown_all == 0) && ($raw_seqs < ($qc_fail_seqs + $unkn_aa_reads + $ann_aa_reads + $ann_rna_reads))) {
+# 	my $diff = ($qc_fail_seqs + $unkn_aa_reads + $ann_aa_reads + $ann_rna_reads) - $raw_seqs;
+# 	$unkn_aa_reads = ($diff > $unkn_aa_reads) ? 0 : $unkn_aa_reads - $diff;
+#       }
+#   }
 
-  # get charts
-  my $colors = ["#6C6C6C","#dc3912","#ff9900","#109618","#3366cc","#990099"];
-  my $summary_chart = $self->get_summary_chart($colors, $qc_fail_seqs, $unknown_all, $unkn_aa_reads, $ann_aa_reads, $ann_rna_reads);
-  my $source_chart  = $self->get_source_chart($job, $is_rna, format_number($aa_sims), percent($aa_sims,$aa_feats), format_number($aa_ontol), percent($aa_ontol,$aa_sims), format_number($ann_rna_reads), percent($ann_rna_reads,$raw_seqs));
-  my $taxa_chart    = $self->get_taxa_chart($job);
-  my $func_chart    = $self->get_func_charts($job, $aa_feats, $aa_sims);
-  my $drisee_plot   = $self->get_drisee_chart($job);
-  my $bp_consensus  = $self->get_consensus_chart($job);
+#   # get charts
+#   my $colors = ["#6C6C6C","#dc3912","#ff9900","#109618","#3366cc","#990099"];
+#   my $summary_chart = $self->get_summary_chart($colors, $qc_fail_seqs, $unknown_all, $unkn_aa_reads, $ann_aa_reads, $ann_rna_reads);
+#   my $source_chart  = $self->get_source_chart($job, $is_rna, format_number($aa_sims), percent($aa_sims,$aa_feats), format_number($aa_ontol), percent($aa_ontol,$aa_sims), format_number($ann_rna_reads), percent($ann_rna_reads,$raw_seqs));
+#   my $taxa_chart    = $self->get_taxa_chart($job);
+#   my $func_chart    = $self->get_func_charts($job, $aa_feats, $aa_sims);
+#   my $drisee_plot   = $self->get_drisee_chart($job);
+#   my $bp_consensus  = $self->get_consensus_chart($job);
 
-  # mg summary text
-  $html .= "<a name='summary_ref'></a><table><tr><td>";
-  $html .= "<h3>Metagenome Summary</h3><div style='width:450px;'>";
-  $html .= "<p>Dataset ".$job->name." was uploaded on ".$job_dt->mdy('/')." and contains ".format_number($raw_seqs)." sequences totaling ".format_number($raw_bps)." basepairs with an average length of ".format_number($raw_len_avg)." bps. The piechart below breaks down the uploaded sequences into ".($is_rna ? '3' : '5')." distinct categories.</p>";
-  $html .= "<p>".format_number($qc_fail_seqs)." sequences (".percent($qc_fail_seqs,$raw_seqs).") failed to pass the QC pipeline. Of the sequences that passed QC, ".format_number($ann_rna_reads)." sequences (".percent($ann_rna_reads,$raw_seqs).") contain ribosomal RNA genes. ";
-  unless ($is_rna) {
-    $html .= "Of the remainder, ".format_number($ann_aa_reads)." sequences (".percent($ann_aa_reads,$raw_seqs).") contain predicted proteins with known functions and ".format_number($unkn_aa_reads)." sequences (".percent($unkn_aa_reads,$raw_seqs).") contain predicted proteins with unknown function. ";
-  }
-  $html .= format_number($unknown_all)." sequences (".percent($unknown_all,$raw_seqs).") have no rRNA genes";
-  unless ($is_rna) {
-    $html .= " or predicted proteins";
-  }
-  $html .= ".</p><p>The analysis results shown on this page are computed by MG-RAST. Please note that authors may upload data that they have published their own analysis for, in such cases comparison within the MG-RAST framework can not be done.</p>";
-  $html .= "<p><a class='nav_top' target=_blank href='?page=Download&metagenome=$mgid'><img src='./Html/mg-download.png' style='width:20px;height:20px;' title='Download $mgid'></a>&nbsp;&nbsp;&nbsp;<span style='font-variant:small-caps'>download</span> data and annotations";
-  $html .= "<br><a class='nav_top' target=_blank href='http://metagenomics.anl.gov?page=Analysis&metagenome=$mgid'><img src='./Html/analysis.gif' style='width:20px;height:20px;' title='Analyze $mgid'></a>&nbsp;&nbsp;&nbsp;<span style='font-variant:small-caps'>analyze</span> annotations in detail.";
-  $html .= "<br><a class='nav_top' href='#search_ref'><img src='./Html/lupe.png' style='width:20px;height:20px;' title='Search $mgid'></a>&nbsp;&nbsp;&nbsp;<span style='font-variant:small-caps'>search</span> through annotations.</p>";
-  $html .= "</div><p><span style='padding-left:15px;'><b>Sequence Breakdown</b></span>$summary_chart";
-  $html .= "<em style='padding-left:25px;font-size:x-small'>Note: Sequences containing multiple predicted features are only counted in one category.</em><br>";
-  $html .= "<em style='padding-left:50px;font-size:x-small'>Currently downloading of sequences via chart slices is not enabeled.</em>";
-  $html .= "</p></td><td style='padding-left:25px;'></td>";
+#   # mg summary text
+#   $html .= "<a name='summary_ref'></a><table><tr><td>";
+#   $html .= "<h3>Metagenome Summary</h3><div style='width:450px;'>";
+#   $html .= "<p>Dataset ".$job->name." was uploaded on ".$job_dt->mdy('/')." and contains ".format_number($raw_seqs)." sequences totaling ".format_number($raw_bps)." basepairs with an average length of ".format_number($raw_len_avg)." bps. The piechart below breaks down the uploaded sequences into ".($is_rna ? '3' : '5')." distinct categories.</p>";
+#   $html .= "<p>".format_number($qc_fail_seqs)." sequences (".percent($qc_fail_seqs,$raw_seqs).") failed to pass the QC pipeline. Of the sequences that passed QC, ".format_number($ann_rna_reads)." sequences (".percent($ann_rna_reads,$raw_seqs).") contain ribosomal RNA genes. ";
+#   unless ($is_rna) {
+#     $html .= "Of the remainder, ".format_number($ann_aa_reads)." sequences (".percent($ann_aa_reads,$raw_seqs).") contain predicted proteins with known functions and ".format_number($unkn_aa_reads)." sequences (".percent($unkn_aa_reads,$raw_seqs).") contain predicted proteins with unknown function. ";
+#   }
+#   $html .= format_number($unknown_all)." sequences (".percent($unknown_all,$raw_seqs).") have no rRNA genes";
+#   unless ($is_rna) {
+#     $html .= " or predicted proteins";
+#   }
+#   $html .= ".</p><p>The analysis results shown on this page are computed by MG-RAST. Please note that authors may upload data that they have published their own analysis for, in such cases comparison within the MG-RAST framework can not be done.</p>";
+#   $html .= "<p><a class='nav_top' target=_blank href='?page=Download&metagenome=$mgid'><img src='./Html/mg-download.png' style='width:20px;height:20px;' title='Download $mgid'></a>&nbsp;&nbsp;&nbsp;<span style='font-variant:small-caps'>download</span> data and annotations";
+#   $html .= "<br><a class='nav_top' target=_blank href='http://metagenomics.anl.gov?page=Analysis&metagenome=$mgid'><img src='./Html/analysis.gif' style='width:20px;height:20px;' title='Analyze $mgid'></a>&nbsp;&nbsp;&nbsp;<span style='font-variant:small-caps'>analyze</span> annotations in detail.";
+#   $html .= "<br><a class='nav_top' href='#search_ref'><img src='./Html/lupe.png' style='width:20px;height:20px;' title='Search $mgid'></a>&nbsp;&nbsp;&nbsp;<span style='font-variant:small-caps'>search</span> through annotations.</p>";
+#   $html .= "</div><p><span style='padding-left:15px;'><b>Sequence Breakdown</b></span>$summary_chart";
+#   $html .= "<em style='padding-left:25px;font-size:x-small'>Note: Sequences containing multiple predicted features are only counted in one category.</em><br>";
+#   $html .= "<em style='padding-left:50px;font-size:x-small'>Currently downloading of sequences via chart slices is not enabeled.</em>";
+#   $html .= "</p></td><td style='padding-left:25px;'></td>";
   
-  # toc
-  $html .= "<td><h3>Table of Contents</h3>";
-  $html .= "<div style='border:2px solid #AAAAAA;padding:10px;background-color:#EEEEEE;'>";
-  # tools
-  $html .= "<li>Work with Metagenome Data</li>";
-  $html .= "<ul style='margin:0;'>";
-  $html .= "<li><a href='#download_ref'>Download</a></li>";
-  $html .= "<li><a href='#search_ref'>Search</a></li>";
-  $html .= "</ul>";
-  # overview
-  $html .= "<li style='padding-top:5px;'>Overview of Metagenome</li>";
-  $html .= "<ul style='margin:0;'>";
-  $html .= "<li><a href='#summary_ref'>Summary</a></li>";
-  if (exists($self->{meta_info}->{project_description})) {
-    $html .= "<li><a href='#project_ref'>Project Information</a></li>";
-  }
-  $html .= "<li><a href='#mixs_ref'>GSC MIxS Info</a></li>";
-  if ($md_ext_ids->{pubmed}) {
-    $html .= "<li><a href='#pub_ref'>Publication Abstracts</a></li>";
-  }
-  $html .= "</ul>";
-  # qc
-  if ((! $is_rna) || $bp_consensus) {
-    $html .= "<li style='padding-top:5px;'>Metagenome QC</li>";
-    $html .= "<ul style='margin:0;'>";
-    if (($drisee_num > 0) && (! $is_rna)) {
-      $html .= "<li><a href='#drisee_ref'>DRISEE</a></li>";
-    }
-    if (! $is_rna) {
-      $html .= "<li><a href='#kmer_ref'>Kmer Profile</a></li>";
-    }
-    if ($bp_consensus) {
-      $html .= "<li><a href='#consensus_ref'>Nucleotide Histogram</a></li>";
-    }
-    $html .= "</ul>";
-  }
-  # organism
-  $html .= "<li style='padding-top:5px;'>Organism Breakdown</li>";
-  $html .= "<ul style='margin:0;'>";
-  if ($taxa_chart) {
-    $html .= "<li><a href='#org_ref'>Taxonomic Distribution</a></li>";
-  }
-  $html .= "<li><a href='#rank_ref'>Rank Abundance Plot</a></li>";
-  $html .= "<li><a href='#rare_ref'>Rarefaction Curve</a></li>";
-  $html .= "<li><a href='#alpha_ref'>Alpha Diversity</a></li>";
-  $html .= "</ul>";
-  # function
-  if ($func_chart && (! $is_rna)) {
-    $html .= "<li style='padding-top:5px;'>Functional Breakdown</li>";
-    $html .= "<ul style='margin:0;'><li><a href='#func_ref'>Functional Categories</a></li></ul>";
-  }
-  # technical
-  $html .= "<li style='padding-top:5px;'>Technical Data</li>";
-  $html .= "<ul style='margin:0;'>";
-  $html .= "<li><a href='#stats_ref'>Statistics</a></li>";
-  $html .= "<li><a href='#meta_ref'>Metadata</a></li>";
-  if ($source_chart) {
-    $html .= "<li><a href='#source_ref'>Source Distribution</a></li>";
-  }
-  $html .= "<li><a href='#len_ref'>Sequence Length Histogram</a></li>";
-  $html .= "<li><a href='#gc_ref'>Sequence GC Distribution</a></li>";
-  $html .= "</ul></ul></div></td></tr></table><br>";
+#   # toc
+#   $html .= "<td><h3>Table of Contents</h3>";
+#   $html .= "<div style='border:2px solid #AAAAAA;padding:10px;background-color:#EEEEEE;'>";
+#   # tools
+#   $html .= "<li>Work with Metagenome Data</li>";
+#   $html .= "<ul style='margin:0;'>";
+#   $html .= "<li><a href='#download_ref'>Download</a></li>";
+#   $html .= "<li><a href='#search_ref'>Search</a></li>";
+#   $html .= "</ul>";
+#   # overview
+#   $html .= "<li style='padding-top:5px;'>Overview of Metagenome</li>";
+#   $html .= "<ul style='margin:0;'>";
+#   $html .= "<li><a href='#summary_ref'>Summary</a></li>";
+#   if (exists($self->{meta_info}->{project_description})) {
+#     $html .= "<li><a href='#project_ref'>Project Information</a></li>";
+#   }
+#   $html .= "<li><a href='#mixs_ref'>GSC MIxS Info</a></li>";
+#   if ($md_ext_ids->{pubmed}) {
+#     $html .= "<li><a href='#pub_ref'>Publication Abstracts</a></li>";
+#   }
+#   $html .= "</ul>";
+#   # qc
+#   if ((! $is_rna) || $bp_consensus) {
+#     $html .= "<li style='padding-top:5px;'>Metagenome QC</li>";
+#     $html .= "<ul style='margin:0;'>";
+#     if (($drisee_num > 0) && (! $is_rna)) {
+#       $html .= "<li><a href='#drisee_ref'>DRISEE</a></li>";
+#     }
+#     if (! $is_rna) {
+#       $html .= "<li><a href='#kmer_ref'>Kmer Profile</a></li>";
+#     }
+#     if ($bp_consensus) {
+#       $html .= "<li><a href='#consensus_ref'>Nucleotide Histogram</a></li>";
+#     }
+#     $html .= "</ul>";
+#   }
+#   # organism
+#   $html .= "<li style='padding-top:5px;'>Organism Breakdown</li>";
+#   $html .= "<ul style='margin:0;'>";
+#   if ($taxa_chart) {
+#     $html .= "<li><a href='#org_ref'>Taxonomic Distribution</a></li>";
+#   }
+#   $html .= "<li><a href='#rank_ref'>Rank Abundance Plot</a></li>";
+#   $html .= "<li><a href='#rare_ref'>Rarefaction Curve</a></li>";
+#   $html .= "<li><a href='#alpha_ref'>Alpha Diversity</a></li>";
+#   $html .= "</ul>";
+#   # function
+#   if ($func_chart && (! $is_rna)) {
+#     $html .= "<li style='padding-top:5px;'>Functional Breakdown</li>";
+#     $html .= "<ul style='margin:0;'><li><a href='#func_ref'>Functional Categories</a></li></ul>";
+#   }
+#   # technical
+#   $html .= "<li style='padding-top:5px;'>Technical Data</li>";
+#   $html .= "<ul style='margin:0;'>";
+#   $html .= "<li><a href='#stats_ref'>Statistics</a></li>";
+#   $html .= "<li><a href='#meta_ref'>Metadata</a></li>";
+#   if ($source_chart) {
+#     $html .= "<li><a href='#source_ref'>Source Distribution</a></li>";
+#   }
+#   $html .= "<li><a href='#len_ref'>Sequence Length Histogram</a></li>";
+#   $html .= "<li><a href='#gc_ref'>Sequence GC Distribution</a></li>";
+#   $html .= "</ul></ul></div></td></tr></table><br>";
   
-  # project description
-  $html .= "<br><a name='project_ref'></a><a name='mixs_ref'></a><table><tr>";
-  if ($self->{project}) {
-    $html .= "<td><h3>Project Information</h3>";
-    $html .= "<div style='width:375px;'><p>This dataset is part of project $project_link.</p>";
-    if (exists $self->{meta_info}->{project_description}) {
-      $html .= "<p>".$self->{meta_info}->{project_description}."</p>";
-    }
-    $html .= "<p>There are $projectjob_num other metagenomes in this project</p></div></td>";
-    $html .= "<td rowspan='2' style='padding-left:25px;'></td>";
-    $html .= "<td rowspan='2'>";
-  } else {
-    $html .= "<td>";
-  }
-  # gsc mixs
-  $html .= "<h3>GSC MIxS Info</h3>";
-  $html .= "<div class='metagenome_info' style='width: 300px;'><ul style='margin: 0; padding: 0;'>";
-  $html .= "<li class='even'><label style='text-align: left;'>Investigation Type</label><span style='width: 180px'>Metagenome".(($md_seq_type =~ /wgs|amplicon/i) ? ": $md_seq_type" : "")."</span></li>";
-  $html .= "<li class='odd'><label style='text-align: left;'>Project Name</label><span style='width: 180px'>".($self->{project} ? $project_link : "-")."</span></li>";
-  $html .= "<li class='even'><label style='text-align: left;'>Latitude and Longitude</label><span style='width: 180px'>".(scalar(@$md_coordinate) ? join(", ", @$md_coordinate) : "-, -")."</span></li>";
-  $html .= "<li class='odd'><label style='text-align: left;'>Country and/or Sea, Location</label><span style='width: 180px'>".(scalar(@$md_region) ? join("<br>", @$md_region) : "-")."</span></li>";
-  $html .= "<li class='even'><label style='text-align: left;'>Collection Date</label><span style='width: 180px'>".($md_date_time ? $md_date_time : "-")."</span></li>";
-  $html .= "<li class='odd'><label style='text-align: left;'>Environment (Biome)</label><span style='width: 180px'>".($md_biome ? $md_biome : "-")."</span></li>";
-  $html .= "<li class='even'><label style='text-align: left;'>Environment (Feature)</label><span style='width: 180px'>".($md_feature ? $md_feature : "-")."</span></li>";
-  $html .= "<li class='odd'><label style='text-align: left;'>Environment (Material)</label><span style='width: 180px'>".($md_material ? $md_material : "-")."</span></li>";
-  $html .= "<li class='even'><label style='text-align: left;'>Environmental Package</label><span style='width: 180px'>".($md_enviroment ? $md_enviroment : "-")."</span></li>";
-  $html .= "<li class='odd'><label style='text-align: left;'>Sequencing Method</label><span style='width: 180px'>".($md_seqmethod ? $md_seqmethod : "-")."</span></li>";
-  $html .= "<li class='even'><label style='text-align: left;'><a href='#meta_ref'>More Metadata</a></label><span style='width: 180px'>&nbsp;</span></li>";
-  $html .= "</ul></div></td></tr><tr><td style='vertical-align:top'><ul>";
-  # link to similar mgs
-  $html .= "<li style='margin-top:0.25em;margin-bottom:0.25em;list-style-type:none;'>";
-  if (($projectjob_num > 0) && $projectjob_url) {
-    $html .= "<a target=_blank href='$projectjob_url'>&raquo; find metagenomes within this project</a>";
-  } else {
-    $html .= "&raquo; find metagenomes within this project";
-  }
-  $html .= "</li><li style='margin-top:0.25em;margin-bottom:0.25em;list-style-type:none;'>";
-  if ($md_biome) {
-    $html .= "<a target=_blank href='?page=MetagenomeSearch&run_now=1&smode=2&qnum=1&type_q1=metadata&match_q1=1_1&extra_q1=biome-information_envo_lite&input_q1=$md_biome'>&raquo; find metagenomes within this biome</a>";
-  } else {
-    $html .= "&raquo; find metagenomes within this biome";
-  }
-  $html .= "</li><li style='margin-top:0.25em;margin-bottom:0.25em;list-style-type:none;'>";
-  if ($md_country) {
-    $html .= "<a target=_blank href='?page=MetagenomeSearch&run_now=1&smode=2&qnum=1&type_q1=metadata&match_q1=1_1&extra_q1=sample-origin_country&input_q1=$md_country'>&raquo; find metagenomes within this country</a>";
-  } else {
-    $html .= "&raquo; find metagenomes within this country";
-  }
-  $html .= "</li><li style='margin-top:0.25em;margin-bottom:0.25em;list-style-type:none;'>";
-  if (scalar @$md_coordinate) {
-    my ($lat, $lng) = @$md_coordinate;
-    my $lat_10  = "input_q1=" . join("_", sort {$a <=> $b} ($lat - 0.1, $lat + 0.1));
-    my $lng_10  = "input_q2=" . join("_", sort {$a <=> $b} ($lng - 0.1, $lng + 0.1));
-    my $lat_30  = "input_q1=" . join("_", sort {$a <=> $b} ($lat - 0.3, $lat + 0.3));
-    my $lng_30  = "input_q2=" . join("_", sort {$a <=> $b} ($lng - 0.3, $lng + 0.3));
-    my $lat_100 = "input_q1=" . join("_", sort {$a <=> $b} ($lat - 1.0, $lat + 1.0));
-    my $lng_100 = "input_q2=" . join("_", sort {$a <=> $b} ($lng - 1.0, $lng + 1.0));
-    my $link = "?page=MetagenomeSearch&run_now=1&smode=2&qnum=2&type_q1=metadata&type_q2=metadata&match_q1=2_1&match_q2=2_1&extra_q1=sample-origin_latitude&extra_q2=sample-origin_longitude";
-    $html .= "&raquo; find metagenomes within <a target=_blank href='$link&$lat_10&$lng_10'>10</a> | <a target=_blank href='$link&$lat_30&$lng_30'>30</a> | <a target=_blank href='$link&$lat_100&$lng_100'>100</a> kilometers";
-  } else {
-    $html .= "&raquo; find metagenomes within 10 | 30 | 100 kilometers";
-  }
-  $html .= "</li></ul></td></tr></table><br>";
+#   # project description
+#   $html .= "<br><a name='project_ref'></a><a name='mixs_ref'></a><table><tr>";
+#   if ($self->{project}) {
+#     $html .= "<td><h3>Project Information</h3>";
+#     $html .= "<div style='width:375px;'><p>This dataset is part of project $project_link.</p>";
+#     if (exists $self->{meta_info}->{project_description}) {
+#       $html .= "<p>".$self->{meta_info}->{project_description}."</p>";
+#     }
+#     $html .= "<p>There are $projectjob_num other metagenomes in this project</p></div></td>";
+#     $html .= "<td rowspan='2' style='padding-left:25px;'></td>";
+#     $html .= "<td rowspan='2'>";
+#   } else {
+#     $html .= "<td>";
+#   }
+#   # gsc mixs
+#   $html .= "<h3>GSC MIxS Info</h3>";
+#   $html .= "<div class='metagenome_info' style='width: 300px;'><ul style='margin: 0; padding: 0;'>";
+#   $html .= "<li class='even'><label style='text-align: left;'>Investigation Type</label><span style='width: 180px'>Metagenome".(($md_seq_type =~ /wgs|amplicon/i) ? ": $md_seq_type" : "")."</span></li>";
+#   $html .= "<li class='odd'><label style='text-align: left;'>Project Name</label><span style='width: 180px'>".($self->{project} ? $project_link : "-")."</span></li>";
+#   $html .= "<li class='even'><label style='text-align: left;'>Latitude and Longitude</label><span style='width: 180px'>".(scalar(@$md_coordinate) ? join(", ", @$md_coordinate) : "-, -")."</span></li>";
+#   $html .= "<li class='odd'><label style='text-align: left;'>Country and/or Sea, Location</label><span style='width: 180px'>".(scalar(@$md_region) ? join("<br>", @$md_region) : "-")."</span></li>";
+#   $html .= "<li class='even'><label style='text-align: left;'>Collection Date</label><span style='width: 180px'>".($md_date_time ? $md_date_time : "-")."</span></li>";
+#   $html .= "<li class='odd'><label style='text-align: left;'>Environment (Biome)</label><span style='width: 180px'>".($md_biome ? $md_biome : "-")."</span></li>";
+#   $html .= "<li class='even'><label style='text-align: left;'>Environment (Feature)</label><span style='width: 180px'>".($md_feature ? $md_feature : "-")."</span></li>";
+#   $html .= "<li class='odd'><label style='text-align: left;'>Environment (Material)</label><span style='width: 180px'>".($md_material ? $md_material : "-")."</span></li>";
+#   $html .= "<li class='even'><label style='text-align: left;'>Environmental Package</label><span style='width: 180px'>".($md_enviroment ? $md_enviroment : "-")."</span></li>";
+#   $html .= "<li class='odd'><label style='text-align: left;'>Sequencing Method</label><span style='width: 180px'>".($md_seqmethod ? $md_seqmethod : "-")."</span></li>";
+#   $html .= "<li class='even'><label style='text-align: left;'><a href='#meta_ref'>More Metadata</a></label><span style='width: 180px'>&nbsp;</span></li>";
+#   $html .= "</ul></div></td></tr><tr><td style='vertical-align:top'><ul>";
+#   # link to similar mgs
+#   $html .= "<li style='margin-top:0.25em;margin-bottom:0.25em;list-style-type:none;'>";
+#   if (($projectjob_num > 0) && $projectjob_url) {
+#     $html .= "<a target=_blank href='$projectjob_url'>&raquo; find metagenomes within this project</a>";
+#   } else {
+#     $html .= "&raquo; find metagenomes within this project";
+#   }
+#   $html .= "</li><li style='margin-top:0.25em;margin-bottom:0.25em;list-style-type:none;'>";
+#   if ($md_biome) {
+#     $html .= "<a target=_blank href='?page=MetagenomeSearch&run_now=1&smode=2&qnum=1&type_q1=metadata&match_q1=1_1&extra_q1=biome-information_envo_lite&input_q1=$md_biome'>&raquo; find metagenomes within this biome</a>";
+#   } else {
+#     $html .= "&raquo; find metagenomes within this biome";
+#   }
+#   $html .= "</li><li style='margin-top:0.25em;margin-bottom:0.25em;list-style-type:none;'>";
+#   if ($md_country) {
+#     $html .= "<a target=_blank href='?page=MetagenomeSearch&run_now=1&smode=2&qnum=1&type_q1=metadata&match_q1=1_1&extra_q1=sample-origin_country&input_q1=$md_country'>&raquo; find metagenomes within this country</a>";
+#   } else {
+#     $html .= "&raquo; find metagenomes within this country";
+#   }
+#   $html .= "</li><li style='margin-top:0.25em;margin-bottom:0.25em;list-style-type:none;'>";
+#   if (scalar @$md_coordinate) {
+#     my ($lat, $lng) = @$md_coordinate;
+#     my $lat_10  = "input_q1=" . join("_", sort {$a <=> $b} ($lat - 0.1, $lat + 0.1));
+#     my $lng_10  = "input_q2=" . join("_", sort {$a <=> $b} ($lng - 0.1, $lng + 0.1));
+#     my $lat_30  = "input_q1=" . join("_", sort {$a <=> $b} ($lat - 0.3, $lat + 0.3));
+#     my $lng_30  = "input_q2=" . join("_", sort {$a <=> $b} ($lng - 0.3, $lng + 0.3));
+#     my $lat_100 = "input_q1=" . join("_", sort {$a <=> $b} ($lat - 1.0, $lat + 1.0));
+#     my $lng_100 = "input_q2=" . join("_", sort {$a <=> $b} ($lng - 1.0, $lng + 1.0));
+#     my $link = "?page=MetagenomeSearch&run_now=1&smode=2&qnum=2&type_q1=metadata&type_q2=metadata&match_q1=2_1&match_q2=2_1&extra_q1=sample-origin_latitude&extra_q2=sample-origin_longitude";
+#     $html .= "&raquo; find metagenomes within <a target=_blank href='$link&$lat_10&$lng_10'>10</a> | <a target=_blank href='$link&$lat_30&$lng_30'>30</a> | <a target=_blank href='$link&$lat_100&$lng_100'>100</a> kilometers";
+#   } else {
+#     $html .= "&raquo; find metagenomes within 10 | 30 | 100 kilometers";
+#   }
+#   $html .= "</li></ul></td></tr></table><br>";
 
-  # technical text
-  $html .= "<br><a name='stats_ref'><table><tr><td>";
-  $html .= "<h3>Analysis Flowchart</h3><div style='width:375px;'>";
-  if ($is_rna) {
-    $html .= "<p>".format_number($qc_fail_seqs)." sequences failed quality control. Of the ".format_number($qc_rna_seqs)." sequences (totaling ".format_number($qc_rna_bps)." bps) that passed quality control, ".format_number($ann_rna_reads)." (".percent($ann_rna_reads,$qc_rna_seqs).") produced a total of ".format_number($rna_sims)." identified ribosomal RNAs.</p>";
-  } else {
-    $html .= "<p>".format_number($qc_fail_seqs)." sequences failed quality control. Of those, dereplication identified ".format_number($derep_seqs)." sequences (".percent($derep_seqs,$raw_seqs)." of total) as technical duplicates. Of the ".format_number($qc_seqs)." sequences (totaling ".format_number($qc_bps)." bps) that passed quality control, ".format_number($aa_reads)." (".percent($aa_reads,$qc_seqs).") produced a total of ".format_number($aa_feats)." predicted protein coding regions. Of these ".format_number($aa_feats)." predicted protein features, ".format_number($aa_sims)." (".percent($aa_sims,$aa_feats)." of features) have been assigned an annotation using at least one of our protein databases (M5NR) and ".format_number($aa_feats-$aa_sims)." (".percent($aa_feats-$aa_sims,$aa_feats)." of features) have no significant similarities to the protein database (orfans). ".format_number($aa_ontol)." features (".percent($aa_ontol,$aa_sims)." of annotated features) were assigned to functional categories.</p>";
-  }
-  $html .= "</td><td rowspan='3' style='padding-left:25px;'></td>";
+#   # technical text
+#   $html .= "<br><a name='stats_ref'><table><tr><td>";
+#   $html .= "<h3>Analysis Flowchart</h3><div style='width:375px;'>";
+#   if ($is_rna) {
+#     $html .= "<p>".format_number($qc_fail_seqs)." sequences failed quality control. Of the ".format_number($qc_rna_seqs)." sequences (totaling ".format_number($qc_rna_bps)." bps) that passed quality control, ".format_number($ann_rna_reads)." (".percent($ann_rna_reads,$qc_rna_seqs).") produced a total of ".format_number($rna_sims)." identified ribosomal RNAs.</p>";
+#   } else {
+#     $html .= "<p>".format_number($qc_fail_seqs)." sequences failed quality control. Of those, dereplication identified ".format_number($derep_seqs)." sequences (".percent($derep_seqs,$raw_seqs)." of total) as technical duplicates. Of the ".format_number($qc_seqs)." sequences (totaling ".format_number($qc_bps)." bps) that passed quality control, ".format_number($aa_reads)." (".percent($aa_reads,$qc_seqs).") produced a total of ".format_number($aa_feats)." predicted protein coding regions. Of these ".format_number($aa_feats)." predicted protein features, ".format_number($aa_sims)." (".percent($aa_sims,$aa_feats)." of features) have been assigned an annotation using at least one of our protein databases (M5NR) and ".format_number($aa_feats-$aa_sims)." (".percent($aa_feats-$aa_sims,$aa_feats)." of features) have no significant similarities to the protein database (orfans). ".format_number($aa_ontol)." features (".percent($aa_ontol,$aa_sims)." of annotated features) were assigned to functional categories.</p>";
+#   }
+#   $html .= "</td><td rowspan='3' style='padding-left:25px;'></td>";
 
-  # technical stats
-  $html .= "<td rowspan='3'><h3>Analysis Statistics</h3>";
-  $html .= "<div class='metagenome_info' style='width: 320px;'><ul style='margin: 0; padding: 0;'>";
-  $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Upload: Size</label><span style='width: 200px'>".format_number($raw_bps)." bp</span></li>";
-  $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Upload: Sequences Count</label><span style='width: 200px'>".format_number($raw_seqs)."</span></li>";
-  $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Upload: Mean Sequence Length</label><span style='width: 200px'>".format_number($raw_len_avg)." &plusmn; ".format_number($raw_len_std)." bp</span></li>";
-  $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Upload: Mean GC percent</label><span style='width: 200px'>".format_number($raw_gc_avg)." &plusmn; ".format_number($raw_gc_std)." %</span></li>";
-  if ($is_rna) {
-    $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Post QC: Size</label><span style='width: 200px'>".format_number($qc_rna_bps)." bp</span></li>";
-    $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Post QC: Sequences Count</label><span style='width: 200px'>".format_number($qc_rna_seqs)."</span></li>";
-    $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Post QC: Mean Sequence Length</label><span style='width: 200px'>".format_number($qc_rna_len_avg)." &plusmn; ".format_number($qc_len_std)." bp</span></li>";
-    $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Post QC: Mean GC percent</label><span style='width: 200px'>".format_number($qc_rna_gc_avg)." &plusmn; ".format_number($qc_gc_std)." %</span></li>";
-    $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Processed: Predicted rRNA Features</label><span style='width: 200px'>".format_number($rna_feats)."</span></li>";
-    $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Alignment: Identified rRNA Features</label><span style='width: 200px'>".format_number($rna_sims)."</span></li>";
-  } else {
-    $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Technical Duplicates: Sequence Count</label><span style='width: 200px'>".format_number($derep_seqs)."</span></li>";
-    $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Post QC: Size</label><span style='width: 200px'>".format_number($qc_bps)." bp</span></li>";
-    $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Post QC: Sequences Count</label><span style='width: 200px'>".format_number($qc_seqs)."</span></li>";
-    $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Post QC: Mean Sequence Length</label><span style='width: 200px'>".format_number($qc_len_avg)." &plusmn; ".format_number($qc_len_std)." bp</span></li>";
-    $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Post QC: Mean GC percent</label><span style='width: 200px'>".format_number($qc_gc_avg)." &plusmn; ".format_number($qc_gc_std)." %</span></li>";
-    $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Processed: Predicted Protein Features</label><span style='width: 200px'>".format_number($aa_feats)."</span></li>";
-    $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Processed: Predicted rRNA Features</label><span style='width: 200px'>".format_number($rna_feats)."</span></li>";
-    $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Alignment: Identified Protein Features</label><span style='width: 200px'>".format_number($aa_sims)."</span></li>";
-    $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Alignment: Identified rRNA Features</label><span style='width: 200px'>".format_number($rna_sims)."</span></li>";
-    $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Annotation: Identified Functional Categories</label><span style='width: 200px'>".format_number($aa_ontol)."</span></li>";
-  }
-  $html .= "</ul></div></td></tr>";
+#   # technical stats
+#   $html .= "<td rowspan='3'><h3>Analysis Statistics</h3>";
+#   $html .= "<div class='metagenome_info' style='width: 320px;'><ul style='margin: 0; padding: 0;'>";
+#   $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Upload: Size</label><span style='width: 200px'>".format_number($raw_bps)." bp</span></li>";
+#   $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Upload: Sequences Count</label><span style='width: 200px'>".format_number($raw_seqs)."</span></li>";
+#   $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Upload: Mean Sequence Length</label><span style='width: 200px'>".format_number($raw_len_avg)." &plusmn; ".format_number($raw_len_std)." bp</span></li>";
+#   $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Upload: Mean GC percent</label><span style='width: 200px'>".format_number($raw_gc_avg)." &plusmn; ".format_number($raw_gc_std)." %</span></li>";
+#   if ($is_rna) {
+#     $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Post QC: Size</label><span style='width: 200px'>".format_number($qc_rna_bps)." bp</span></li>";
+#     $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Post QC: Sequences Count</label><span style='width: 200px'>".format_number($qc_rna_seqs)."</span></li>";
+#     $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Post QC: Mean Sequence Length</label><span style='width: 200px'>".format_number($qc_rna_len_avg)." &plusmn; ".format_number($qc_len_std)." bp</span></li>";
+#     $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Post QC: Mean GC percent</label><span style='width: 200px'>".format_number($qc_rna_gc_avg)." &plusmn; ".format_number($qc_gc_std)." %</span></li>";
+#     $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Processed: Predicted rRNA Features</label><span style='width: 200px'>".format_number($rna_feats)."</span></li>";
+#     $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Alignment: Identified rRNA Features</label><span style='width: 200px'>".format_number($rna_sims)."</span></li>";
+#   } else {
+#     $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Technical Duplicates: Sequence Count</label><span style='width: 200px'>".format_number($derep_seqs)."</span></li>";
+#     $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Post QC: Size</label><span style='width: 200px'>".format_number($qc_bps)." bp</span></li>";
+#     $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Post QC: Sequences Count</label><span style='width: 200px'>".format_number($qc_seqs)."</span></li>";
+#     $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Post QC: Mean Sequence Length</label><span style='width: 200px'>".format_number($qc_len_avg)." &plusmn; ".format_number($qc_len_std)." bp</span></li>";
+#     $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Post QC: Mean GC percent</label><span style='width: 200px'>".format_number($qc_gc_avg)." &plusmn; ".format_number($qc_gc_std)." %</span></li>";
+#     $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Processed: Predicted Protein Features</label><span style='width: 200px'>".format_number($aa_feats)."</span></li>";
+#     $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Processed: Predicted rRNA Features</label><span style='width: 200px'>".format_number($rna_feats)."</span></li>";
+#     $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Alignment: Identified Protein Features</label><span style='width: 200px'>".format_number($aa_sims)."</span></li>";
+#     $html .= "<li class='even'><label style='text-align: left;white-space:nowrap;'>Alignment: Identified rRNA Features</label><span style='width: 200px'>".format_number($rna_sims)."</span></li>";
+#     $html .= "<li class='odd'><label style='text-align: left;white-space:nowrap;'>Annotation: Identified Functional Categories</label><span style='width: 200px'>".format_number($aa_ontol)."</span></li>";
+#   }
+#   $html .= "</ul></div></td></tr>";
 
-  # technical flowchart
-  my $fc_aa_titles  = ["Passed QC","Predicted\\nFeatures","Annotated\\nProtein","Functional\\nCategory"];
-  my $fc_rna_titles = ["Passed QC","Predicted\\nrRNAs"];
-  my $fc_aa_colors  = [[$colors->[0],$colors->[1]], [$colors->[1],$colors->[4],$colors->[2]], [$colors->[2],$colors->[3]], [$colors->[3],$colors->[5]]];
-  my $fc_rna_colors = [[$colors->[0],$colors->[1]], [$colors->[1],$colors->[4]]];
-  my $fc_aa_data    = [[$raw_seqs,$qc_seqs], [$qc_seqs,$ann_rna_reads,$aa_reads], [$aa_feats,$aa_sims], [$aa_sims,$aa_ontol]];
-  my $fc_rna_data   = [[$raw_seqs,$qc_rna_seqs], [$qc_rna_seqs,$ann_rna_reads]];
+#   # technical flowchart
+#   my $fc_aa_titles  = ["Passed QC","Predicted\\nFeatures","Annotated\\nProtein","Functional\\nCategory"];
+#   my $fc_rna_titles = ["Passed QC","Predicted\\nrRNAs"];
+#   my $fc_aa_colors  = [[$colors->[0],$colors->[1]], [$colors->[1],$colors->[4],$colors->[2]], [$colors->[2],$colors->[3]], [$colors->[3],$colors->[5]]];
+#   my $fc_rna_colors = [[$colors->[0],$colors->[1]], [$colors->[1],$colors->[4]]];
+#   my $fc_aa_data    = [[$raw_seqs,$qc_seqs], [$qc_seqs,$ann_rna_reads,$aa_reads], [$aa_feats,$aa_sims], [$aa_sims,$aa_ontol]];
+#   my $fc_rna_data   = [[$raw_seqs,$qc_rna_seqs], [$qc_rna_seqs,$ann_rna_reads]];
   
-  my $fc_titles = $is_rna ? array2json($fc_rna_titles, 1) : array2json($fc_aa_titles, 1);
-  my $fc_colors = $is_rna ? array2json($fc_rna_colors, 2) : array2json($fc_aa_colors, 2);
-  my $fc_data   = $is_rna ? array2json($fc_rna_data, 2) : array2json($fc_aa_data, 2);
+#   my $fc_titles = $is_rna ? array2json($fc_rna_titles, 1) : array2json($fc_aa_titles, 1);
+#   my $fc_colors = $is_rna ? array2json($fc_rna_colors, 2) : array2json($fc_aa_colors, 2);
+#   my $fc_data   = $is_rna ? array2json($fc_rna_data, 2) : array2json($fc_aa_data, 2);
   
-  $html .= "<tr><td><div id='flowchart_div'></div>";
-  $html .= "<img src='./Html/clear.gif' onload='draw_bar_plot(\"flowchart_div\", $fc_titles, $fc_colors, $fc_data);'></td></tr></table>";
+#   $html .= "<tr><td><div id='flowchart_div'></div>";
+#   $html .= "<img src='./Html/clear.gif' onload='draw_bar_plot(\"flowchart_div\", $fc_titles, $fc_colors, $fc_data);'></td></tr></table>";
 
-  # drisee score
-  if (($drisee_num > 0) && (! $is_rna)) {
-    my ($min, $max, $avg, $stdv) = @{ $jobdbm->JobStatistics->stats_for_tag('drisee_score_raw') };
-    my $drisee_score = sprintf("%.3f", $drisee_num);
-    $html .= qq~<a name='drisee_ref'></a>
-<h3>DRISEE
-<a target=_blank href='http://blog.metagenomics.anl.gov/glossary-of-mg-rast-terms-and-concepts/#drisee_score' style='font-size:14px;padding-left:5px;'>[?]</a>
-<a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
-  if (this.innerHTML=="show") {
-    this.innerHTML = "hide";
-    document.getElementById("drisee_show").style.display = "";
-  } else {
-    document.getElementById("drisee_show").style.display = "none";
-    this.innerHTML = "show";
-  }'>hide</a></h3>
-<div id='drisee_show'>
-  <p><b>DRISEE score = $drisee_score</b></p>
-  <img src='./Html/clear.gif' onload='draw_position_on_range("drisee_bar_div", $drisee_num, $min, $max, $avg, $stdv);'>
-  <div id='drisee_bar_div'></div>
-  <p>DRISEE: Duplicate Read Inferred Sequencing Error Estimation (Keegan et al., PLoS Computational Biology, 2012, In Press)</p>
-  <p>DRISEE is a tool that utilizes artifactual duplicate reads (ADRs) to provide a platform independent assessment of sequencing error in metagenomic (or genomic) sequencing data. DRISEE is designed to consider shotgun data. Currently, it is not appropriate for amplicon data.</p>
-  $drisee_plot
-</div>~;
-  }
+#   # drisee score
+#   if (($drisee_num > 0) && (! $is_rna)) {
+#     my ($min, $max, $avg, $stdv) = @{ $jobdbm->JobStatistics->stats_for_tag('drisee_score_raw') };
+#     my $drisee_score = sprintf("%.3f", $drisee_num);
+#     $html .= qq~<a name='drisee_ref'></a>
+# <h3>DRISEE
+# <a target=_blank href='http://blog.metagenomics.anl.gov/glossary-of-mg-rast-terms-and-concepts/#drisee_score' style='font-size:14px;padding-left:5px;'>[?]</a>
+# <a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
+#   if (this.innerHTML=="show") {
+#     this.innerHTML = "hide";
+#     document.getElementById("drisee_show").style.display = "";
+#   } else {
+#     document.getElementById("drisee_show").style.display = "none";
+#     this.innerHTML = "show";
+#   }'>hide</a></h3>
+# <div id='drisee_show'>
+#   <p><b>DRISEE score = $drisee_score</b></p>
+#   <img src='./Html/clear.gif' onload='draw_position_on_range("drisee_bar_div", $drisee_num, $min, $max, $avg, $stdv);'>
+#   <div id='drisee_bar_div'></div>
+#   <p>DRISEE: Duplicate Read Inferred Sequencing Error Estimation (Keegan et al., PLoS Computational Biology, 2012, In Press)</p>
+#   <p>DRISEE is a tool that utilizes artifactual duplicate reads (ADRs) to provide a platform independent assessment of sequencing error in metagenomic (or genomic) sequencing data. DRISEE is designed to consider shotgun data. Currently, it is not appropriate for amplicon data.</p>
+#   $drisee_plot
+# </div>~;
+#   }
 
-  # kmer profiles
-  if (! $is_rna) {
-    $html .= qq~<a name='kmer_ref'></a>
-<h3>Kmer Profiles
-<a target=_blank href='http://blog.metagenomics.anl.gov/glossary-of-mg-rast-terms-and-concepts/#kmer_profile' style='font-size:14px;padding-left:5px;'>[?]</a>
-<a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
-  if (this.innerHTML=="show") {
-    this.innerHTML = "hide";
-    document.getElementById("kmer_show").style.display = "";
-  } else {
-    document.getElementById("kmer_show").style.display = "none";
-    this.innerHTML = "show";
-  }'>hide</a></h3>
-<a style='cursor:pointer;clear:both;padding-right:20px;' onclick='
-    var new_type = document.getElementById("kmer_type").value;
-    var new_size = document.getElementById("kmer_size").value;
-    execute_ajax("get_kmer_plot", "kmer_div", "metagenome=$mgid&job=$job_id&size="+new_size+"&type="+new_type);'>
-  Redraw the below plot using the following kmer-plot type:</a>
-<select id='kmer_type'>
-  <option value='abundance'>kmer rank abundance</option>
-  <option value='ranked'>ranked kmer consumed</option>
-  <option value='spectrum'>kmer spectrum</option>
-</select>
-<select id='kmer_size'>
-  <option value='15'>15-mer</option>
-  <option value='6'>6-mer</option>
-</select>
-<br><div id='kmer_show'>
-  <img src='./Html/clear.gif' onload='execute_ajax("get_kmer_plot", "kmer_div", "metagenome=$mgid&job=$job_id&size=15&type=abundance");'>
-  <div id='kmer_div'></div>
-</div>~;
-  }
+#   # kmer profiles
+#   if (! $is_rna) {
+#     $html .= qq~<a name='kmer_ref'></a>
+# <h3>Kmer Profiles
+# <a target=_blank href='http://blog.metagenomics.anl.gov/glossary-of-mg-rast-terms-and-concepts/#kmer_profile' style='font-size:14px;padding-left:5px;'>[?]</a>
+# <a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
+#   if (this.innerHTML=="show") {
+#     this.innerHTML = "hide";
+#     document.getElementById("kmer_show").style.display = "";
+#   } else {
+#     document.getElementById("kmer_show").style.display = "none";
+#     this.innerHTML = "show";
+#   }'>hide</a></h3>
+# <a style='cursor:pointer;clear:both;padding-right:20px;' onclick='
+#     var new_type = document.getElementById("kmer_type").value;
+#     var new_size = document.getElementById("kmer_size").value;
+#     execute_ajax("get_kmer_plot", "kmer_div", "metagenome=$mgid&job=$job_id&size="+new_size+"&type="+new_type);'>
+#   Redraw the below plot using the following kmer-plot type:</a>
+# <select id='kmer_type'>
+#   <option value='abundance'>kmer rank abundance</option>
+#   <option value='ranked'>ranked kmer consumed</option>
+#   <option value='spectrum'>kmer spectrum</option>
+# </select>
+# <select id='kmer_size'>
+#   <option value='15'>15-mer</option>
+#   <option value='6'>6-mer</option>
+# </select>
+# <br><div id='kmer_show'>
+#   <img src='./Html/clear.gif' onload='execute_ajax("get_kmer_plot", "kmer_div", "metagenome=$mgid&job=$job_id&size=15&type=abundance");'>
+#   <div id='kmer_div'></div>
+# </div>~;
+#   }
 
-  # consensus plot
-  if ($bp_consensus && (! $is_rna)) {
-    $html .= $bp_consensus;
-  }
+#   # consensus plot
+#   if ($bp_consensus && (! $is_rna)) {
+#     $html .= $bp_consensus;
+#   }
 
-  # source hits distribution
-  if ($source_chart) {
-    $html .= $source_chart;
-  }
+#   # source hits distribution
+#   if ($source_chart) {
+#     $html .= $source_chart;
+#   }
 
-  # ontology hits distrubtion
-  if ($func_chart && (! $is_rna)) {
-    $html .= $func_chart
-  }
+#   # ontology hits distrubtion
+#   if ($func_chart && (! $is_rna)) {
+#     $html .= $func_chart
+#   }
 
-  # taxa hits distribution
-  if ($taxa_chart) {
-    $html .= $taxa_chart;
-  }
+#   # taxa hits distribution
+#   if ($taxa_chart) {
+#     $html .= $taxa_chart;
+#   }
 
-  # rank abundance plot
-  my @rank_levels = @{$self->data('tax_levels')};
-  shift @rank_levels;
-  my $default_level = $rank_levels[0];
-  my $level_opts    = '';
-  foreach my $l (@rank_levels) {
-    $level_opts .= "<option value='$l'>$l</option>";
-  }
-  $html .= qq~<a name='rank_ref'></a>
-<h3>Rank Abundance Plot
-<a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
-  if (this.innerHTML=="show") {
-    this.innerHTML = "hide";
-    document.getElementById("abund_show").style.display = "";
-  } else {
-    document.getElementById("abund_show").style.display = "none";
-    this.innerHTML = "show";
-  }'>hide</a></h3>
-<a style='cursor:pointer;clear:both;padding-right:20px;' onclick='
-    var new_level = document.getElementById("tax_level").value;
-    execute_ajax("get_abund_plot", "rank_abund_div", "metagenome=$mgid&job=$job_id&level="+new_level);'>
-  Redraw the below plot using the following taxonomic level:</a>
-<select id='tax_level'>$level_opts</select><br>
-<div id='abund_show'>
-  <img src='./Html/clear.gif' onload='execute_ajax("get_abund_plot", "rank_abund_div", "metagenome=$mgid&job=$job_id&level=$default_level");'>
-  <div id='rank_abund_div'></div>
-</div>~;
+#   # rank abundance plot
+#   my @rank_levels = @{$self->data('tax_levels')};
+#   shift @rank_levels;
+#   my $default_level = $rank_levels[0];
+#   my $level_opts    = '';
+#   foreach my $l (@rank_levels) {
+#     $level_opts .= "<option value='$l'>$l</option>";
+#   }
+#   $html .= qq~<a name='rank_ref'></a>
+# <h3>Rank Abundance Plot
+# <a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
+#   if (this.innerHTML=="show") {
+#     this.innerHTML = "hide";
+#     document.getElementById("abund_show").style.display = "";
+#   } else {
+#     document.getElementById("abund_show").style.display = "none";
+#     this.innerHTML = "show";
+#   }'>hide</a></h3>
+# <a style='cursor:pointer;clear:both;padding-right:20px;' onclick='
+#     var new_level = document.getElementById("tax_level").value;
+#     execute_ajax("get_abund_plot", "rank_abund_div", "metagenome=$mgid&job=$job_id&level="+new_level);'>
+#   Redraw the below plot using the following taxonomic level:</a>
+# <select id='tax_level'>$level_opts</select><br>
+# <div id='abund_show'>
+#   <img src='./Html/clear.gif' onload='execute_ajax("get_abund_plot", "rank_abund_div", "metagenome=$mgid&job=$job_id&level=$default_level");'>
+#   <div id='rank_abund_div'></div>
+# </div>~;
   
-  # rarefaction curve
-  $html .= qq~<a name='rare_ref'></a>
-<h3>Rarefaction Curve
-<a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
-  if (this.innerHTML=="show") {
-    this.innerHTML = "hide";
-    document.getElementById("rare_show").style.display = "";
-  } else {
-    document.getElementById("rare_show").style.display = "none";
-    this.innerHTML = "show";
-  }'>hide</a></h3>
-<div id='rare_show'>
-  <img src='./Html/clear.gif' onload='execute_ajax("get_rare_curve", "rare_curve_div", "metagenome=$mgid&job=$job_id");'>
-  <div id='rare_curve_div'></div>
-</div>~;
+#   # rarefaction curve
+#   $html .= qq~<a name='rare_ref'></a>
+# <h3>Rarefaction Curve
+# <a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
+#   if (this.innerHTML=="show") {
+#     this.innerHTML = "hide";
+#     document.getElementById("rare_show").style.display = "";
+#   } else {
+#     document.getElementById("rare_show").style.display = "none";
+#     this.innerHTML = "show";
+#   }'>hide</a></h3>
+# <div id='rare_show'>
+#   <img src='./Html/clear.gif' onload='execute_ajax("get_rare_curve", "rare_curve_div", "metagenome=$mgid&job=$job_id");'>
+#   <div id='rare_curve_div'></div>
+# </div>~;
 
-  # alpha diversity
-  $html .= qq~<a name='alpha_ref'></a>
-<h3>Alpha Diversity
-<a target=_blank href='http://blog.metagenomics.anl.gov/glossary-of-mg-rast-terms-and-concepts/#alpha_diversity' style='font-size:14px;padding-left:5px;'>[?]</a>
-<a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
-  if (this.innerHTML=="show") {
-    this.innerHTML = "hide";
-    document.getElementById("alpha_show").style.display = "";
-  } else {
-    document.getElementById("alpha_show").style.display = "none";
-    this.innerHTML = "show";
-  }'>hide</a></h3>
-<div id='alpha_show'>
-  <img src='./Html/clear.gif' onload='execute_ajax("get_alpha", "alpha_div", "metagenome=$mgid&job=$job_id&alpha=$alpha_num");'>
-  <div id='alpha_div'></div>
-</div>~;
+#   # alpha diversity
+#   $html .= qq~<a name='alpha_ref'></a>
+# <h3>Alpha Diversity
+# <a target=_blank href='http://blog.metagenomics.anl.gov/glossary-of-mg-rast-terms-and-concepts/#alpha_diversity' style='font-size:14px;padding-left:5px;'>[?]</a>
+# <a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
+#   if (this.innerHTML=="show") {
+#     this.innerHTML = "hide";
+#     document.getElementById("alpha_show").style.display = "";
+#   } else {
+#     document.getElementById("alpha_show").style.display = "none";
+#     this.innerHTML = "show";
+#   }'>hide</a></h3>
+# <div id='alpha_show'>
+#   <img src='./Html/clear.gif' onload='execute_ajax("get_alpha", "alpha_div", "metagenome=$mgid&job=$job_id&alpha=$alpha_num");'>
+#   <div id='alpha_div'></div>
+# </div>~;
 
-  # sequence length histogram
-  my @len_raw_hist = sort {$a->[0] <=> $b->[0]} @{ $mgdb->get_histogram_nums($job->job_id, 'len', 'raw') };
-  my @len_qc_hist  = sort {$a->[0] <=> $b->[0]} @{ $mgdb->get_histogram_nums($job->job_id, 'len', 'qc') };
-  my $len_min = (@len_raw_hist && @len_qc_hist) ? min($len_raw_hist[0][0], $len_qc_hist[0][0]) : (@len_raw_hist ? $len_raw_hist[0][0] : (@len_qc_hist ? $len_qc_hist[0][0] : 0));
-  my $len_max = (@len_raw_hist && @len_qc_hist) ? max($len_raw_hist[-1][0], $len_qc_hist[-1][0]) : (@len_raw_hist ? $len_raw_hist[-1][0] : (@len_qc_hist ? $len_qc_hist[-1][0] : 0));
-  my $len_raw_bins = @len_raw_hist ? &get_bin_set(\@len_raw_hist, $len_min, $len_max, $self->data('bin_size')) : [];
-  my $len_qc_bins  = @len_qc_hist  ? &get_bin_set(\@len_qc_hist, $len_min, $len_max, $self->data('bin_size')) : [];
+#   # sequence length histogram
+#   my @len_raw_hist = sort {$a->[0] <=> $b->[0]} @{ $mgdb->get_histogram_nums($job->job_id, 'len', 'raw') };
+#   my @len_qc_hist  = sort {$a->[0] <=> $b->[0]} @{ $mgdb->get_histogram_nums($job->job_id, 'len', 'qc') };
+#   my $len_min = (@len_raw_hist && @len_qc_hist) ? min($len_raw_hist[0][0], $len_qc_hist[0][0]) : (@len_raw_hist ? $len_raw_hist[0][0] : (@len_qc_hist ? $len_qc_hist[0][0] : 0));
+#   my $len_max = (@len_raw_hist && @len_qc_hist) ? max($len_raw_hist[-1][0], $len_qc_hist[-1][0]) : (@len_raw_hist ? $len_raw_hist[-1][0] : (@len_qc_hist ? $len_qc_hist[-1][0] : 0));
+#   my $len_raw_bins = @len_raw_hist ? &get_bin_set(\@len_raw_hist, $len_min, $len_max, $self->data('bin_size')) : [];
+#   my $len_qc_bins  = @len_qc_hist  ? &get_bin_set(\@len_qc_hist, $len_min, $len_max, $self->data('bin_size')) : [];
 
-  $html .= qq~<a name='len_ref'></a>
-<h3>Sequence Length Histogram
-<a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
-  if (this.innerHTML=="show") {
-    this.innerHTML = "hide";
-    document.getElementById("len_show").style.display = "";
-  } else {
-    document.getElementById("len_show").style.display = "none";
-    this.innerHTML = "show";
-  }'>hide</a></h3>
-<div id='len_show'>
-<p>The histograms below show the distribution of sequence lengths in basepairs for this metagenome. Each position represents the number of sequences within a length bp range.</p><p>The data used in these graphs are based on raw upload and post QC sequences.</p>~;
+#   $html .= qq~<a name='len_ref'></a>
+# <h3>Sequence Length Histogram
+# <a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
+#   if (this.innerHTML=="show") {
+#     this.innerHTML = "hide";
+#     document.getElementById("len_show").style.display = "";
+#   } else {
+#     document.getElementById("len_show").style.display = "none";
+#     this.innerHTML = "show";
+#   }'>hide</a></h3>
+# <div id='len_show'>
+# <p>The histograms below show the distribution of sequence lengths in basepairs for this metagenome. Each position represents the number of sequences within a length bp range.</p><p>The data used in these graphs are based on raw upload and post QC sequences.</p>~;
 
-  if (@$len_raw_bins > 1) {
-    my $len_raw_data = join("~", map { $_->[0] .";;" . $_->[1] } @$len_raw_bins);
-    my $len_raw_link = $self->chart_export_link($len_raw_bins, 'upload_len_hist');
-    $html .= qq~<p>$len_raw_link</p>
-<div id='static2'>
-The image is currently dynamic. To be able to right-click/save the image, please click the static button
-<input type='button' value='static' onclick='
-  document.getElementById("static2").style.display = "none";
-  document.getElementById("dynamic2").style.display = "";
-  save_image("length_hist_raw");
-  document.getElementById("length_hist_rawcanvas").style.display = "";
-  document.getElementById("length_hist_raw").style.display = "none";'>
-</div>
-<div style='display: none;' id='dynamic2'>The image is currently static. You can right-click/save it. To enable dynamic image, please click the dynamic button
-<input type='button' value='dynamic' onclick='
-  document.getElementById("static2").style.display = "";
-  document.getElementById("dynamic2").style.display = "none";
-  document.getElementById("length_hist_rawcanvas").style.display = "none";
-  document.getElementById("length_hist_raw").style.display = "";'>
-</div>
-<div><div id='length_hist_raw'></div></div>
-<input type='hidden' id='len_data_raw' value='$len_raw_data'>
-<img src='./Html/clear.gif' onload='draw_histogram_plot("len_data_raw", "length_hist_raw", "bps", "Number of Reads Uploaded");'>~;
-  } else {
-    $html .= "<p><em>Raw sequence length histogram " . (@$len_raw_bins ? "has insufficient data" : "not yet computed") . ".</em></p>";
-  }
-  if (@$len_qc_bins > 1) {
-    my $len_qc_data = join("~", map { $_->[0] .";;" . $_->[1] } @$len_qc_bins);
-    my $len_qc_link = $self->chart_export_link($len_qc_bins, 'postqc_len_hist');
-    $html .= qq~<p>$len_qc_link</p>
-<div id='static3'>
-The image is currently dynamic. To be able to right-click/save the image, please click the static button
-<input type='button' value='static' onclick='
-  document.getElementById("static3").style.display = "none";
-  document.getElementById("dynamic3").style.display = "";
-  save_image("length_hist_qc");
-  document.getElementById("length_hist_qccanvas").style.display = "";
-  document.getElementById("length_hist_qc").style.display = "none";'>
-</div>
-<div style='display: none;' id='dynamic3'>The image is currently static. You can right-click/save it. To enable dynamic image, please click the dynamic button
-<input type='button' value='dynamic' onclick='
-  document.getElementById("static3").style.display = "";
-  document.getElementById("dynamic3").style.display = "none";
-  document.getElementById("length_hist_qccanvas").style.display = "none";
-  document.getElementById("length_hist_qc").style.display = "";'>
-</div>
-<div><div id='length_hist_qc'></div></div>
-<input type='hidden' id='len_data_qc' value='$len_qc_data'>
-<img src='./Html/clear.gif' onload='draw_histogram_plot("len_data_qc", "length_hist_qc", "bps", "Number of Reads Post QC");'>~;
-  } else {
-    $html .= "<p><em>QC sequence length histogram " . (@$len_qc_bins ? "has insufficient data" : "not yet computed") . ".</em></p>";
-  }
-  $html .= "</div>";
+#   if (@$len_raw_bins > 1) {
+#     my $len_raw_data = join("~", map { $_->[0] .";;" . $_->[1] } @$len_raw_bins);
+#     my $len_raw_link = $self->chart_export_link($len_raw_bins, 'upload_len_hist');
+#     $html .= qq~<p>$len_raw_link</p>
+# <div id='static2'>
+# The image is currently dynamic. To be able to right-click/save the image, please click the static button
+# <input type='button' value='static' onclick='
+#   document.getElementById("static2").style.display = "none";
+#   document.getElementById("dynamic2").style.display = "";
+#   save_image("length_hist_raw");
+#   document.getElementById("length_hist_rawcanvas").style.display = "";
+#   document.getElementById("length_hist_raw").style.display = "none";'>
+# </div>
+# <div style='display: none;' id='dynamic2'>The image is currently static. You can right-click/save it. To enable dynamic image, please click the dynamic button
+# <input type='button' value='dynamic' onclick='
+#   document.getElementById("static2").style.display = "";
+#   document.getElementById("dynamic2").style.display = "none";
+#   document.getElementById("length_hist_rawcanvas").style.display = "none";
+#   document.getElementById("length_hist_raw").style.display = "";'>
+# </div>
+# <div><div id='length_hist_raw'></div></div>
+# <input type='hidden' id='len_data_raw' value='$len_raw_data'>
+# <img src='./Html/clear.gif' onload='draw_histogram_plot("len_data_raw", "length_hist_raw", "bps", "Number of Reads Uploaded");'>~;
+#   } else {
+#     $html .= "<p><em>Raw sequence length histogram " . (@$len_raw_bins ? "has insufficient data" : "not yet computed") . ".</em></p>";
+#   }
+#   if (@$len_qc_bins > 1) {
+#     my $len_qc_data = join("~", map { $_->[0] .";;" . $_->[1] } @$len_qc_bins);
+#     my $len_qc_link = $self->chart_export_link($len_qc_bins, 'postqc_len_hist');
+#     $html .= qq~<p>$len_qc_link</p>
+# <div id='static3'>
+# The image is currently dynamic. To be able to right-click/save the image, please click the static button
+# <input type='button' value='static' onclick='
+#   document.getElementById("static3").style.display = "none";
+#   document.getElementById("dynamic3").style.display = "";
+#   save_image("length_hist_qc");
+#   document.getElementById("length_hist_qccanvas").style.display = "";
+#   document.getElementById("length_hist_qc").style.display = "none";'>
+# </div>
+# <div style='display: none;' id='dynamic3'>The image is currently static. You can right-click/save it. To enable dynamic image, please click the dynamic button
+# <input type='button' value='dynamic' onclick='
+#   document.getElementById("static3").style.display = "";
+#   document.getElementById("dynamic3").style.display = "none";
+#   document.getElementById("length_hist_qccanvas").style.display = "none";
+#   document.getElementById("length_hist_qc").style.display = "";'>
+# </div>
+# <div><div id='length_hist_qc'></div></div>
+# <input type='hidden' id='len_data_qc' value='$len_qc_data'>
+# <img src='./Html/clear.gif' onload='draw_histogram_plot("len_data_qc", "length_hist_qc", "bps", "Number of Reads Post QC");'>~;
+#   } else {
+#     $html .= "<p><em>QC sequence length histogram " . (@$len_qc_bins ? "has insufficient data" : "not yet computed") . ".</em></p>";
+#   }
+#   $html .= "</div>";
 
-  # sequence gc distribution
-  my @gc_raw_hist = sort {$a->[0] <=> $b->[0]} @{ $mgdb->get_histogram_nums($job->job_id, 'gc', 'raw') };
-  my @gc_qc_hist  = sort {$a->[0] <=> $b->[0]} @{ $mgdb->get_histogram_nums($job->job_id, 'gc', 'qc') };
-  my $gc_raw_bins = @gc_raw_hist ? &get_bin_set(\@gc_raw_hist, 0, 100, $self->data('bin_size')) : [];
-  my $gc_qc_bins  = @gc_qc_hist  ? &get_bin_set(\@gc_qc_hist, 0, 100, $self->data('bin_size')) : [];
+#   # sequence gc distribution
+#   my @gc_raw_hist = sort {$a->[0] <=> $b->[0]} @{ $mgdb->get_histogram_nums($job->job_id, 'gc', 'raw') };
+#   my @gc_qc_hist  = sort {$a->[0] <=> $b->[0]} @{ $mgdb->get_histogram_nums($job->job_id, 'gc', 'qc') };
+#   my $gc_raw_bins = @gc_raw_hist ? &get_bin_set(\@gc_raw_hist, 0, 100, $self->data('bin_size')) : [];
+#   my $gc_qc_bins  = @gc_qc_hist  ? &get_bin_set(\@gc_qc_hist, 0, 100, $self->data('bin_size')) : [];
 
-  $html .= qq~<a name='gc_ref'></a>
-<h3>Sequence GC Distribution
-<a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
-  if (this.innerHTML=="show") {
-    this.innerHTML = "hide";
-    document.getElementById("gc_show").style.display = "";
-  } else {
-    document.getElementById("gc_show").style.display = "none";
-    this.innerHTML = "show";
-  }'>hide</a></h3>
-<div id='gc_show'>
-<p>The histograms below show the distribution of the GC percentage for this metagenome. Each position represents the number of sequences within a GC percentage range. The data used in these graphs is based on raw upload and post QC sequences.</p>~;
+#   $html .= qq~<a name='gc_ref'></a>
+# <h3>Sequence GC Distribution
+# <a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
+#   if (this.innerHTML=="show") {
+#     this.innerHTML = "hide";
+#     document.getElementById("gc_show").style.display = "";
+#   } else {
+#     document.getElementById("gc_show").style.display = "none";
+#     this.innerHTML = "show";
+#   }'>hide</a></h3>
+# <div id='gc_show'>
+# <p>The histograms below show the distribution of the GC percentage for this metagenome. Each position represents the number of sequences within a GC percentage range. The data used in these graphs is based on raw upload and post QC sequences.</p>~;
 
-  if (@$gc_raw_bins > 1) {
-    my $gc_raw_data = join("~", map { $_->[0] .";;" . $_->[1] } @$gc_raw_bins);
-    my $gc_raw_link = $self->chart_export_link($gc_raw_bins, 'upload_gc_hist');
-    $html .= qq~<p>$gc_raw_link</p>
-<div id='static4'>
-The image is currently dynamic. To be able to right-click/save the image, please click the static button
-<input type='button' value='static' onclick='
-  document.getElementById("static4").style.display = "none";
-  document.getElementById("dynamic4").style.display = "";
-  save_image("gc_percent_hist_raw");
-  document.getElementById("gc_percent_hist_rawcanvas").style.display = "";
-  document.getElementById("gc_percent_hist_raw").style.display = "none";'>
-</div>
-<div style='display: none;' id='dynamic4'>The image is currently static. You can right-click/save it. To enable dynamic image, please click the dynamic button
-<input type='button' value='dynamic' onclick='
-  document.getElementById("static4").style.display = "";
-  document.getElementById("dynamic4").style.display = "none";
-  document.getElementById("gc_percent_hist_rawcanvas").style.display = "none";
-  document.getElementById("gc_percent_hist_raw").style.display = "";'>
-</div>
-<div><div id='gc_percent_hist_raw'></div></div>
-<input type='hidden' id='gc_data_raw' value='$gc_raw_data'>
-<img src='./Html/clear.gif' onload='draw_histogram_plot("gc_data_raw", "gc_percent_hist_raw", "% gc", "Number of Reads Uploaded");'>~;
-  } else {
-    $html .= "<p><em>Raw GC distribution histogram " . (@$gc_raw_bins ? "has insufficient data" : "not yet computed") . ".</em></p>";
-  }
-  if (@$gc_qc_bins > 1) {
-    my $gc_qc_data = join("~", map { $_->[0] .";;" . $_->[1] } @$gc_qc_bins);
-    my $gc_qc_link = $self->chart_export_link($gc_qc_bins, 'postqc_gc_hist');
-    $html .= qq~<p>$gc_qc_link</p>
-<div id='static5'>
-The image is currently dynamic. To be able to right-click/save the image, please click the static button
-<input type='button' value='static' onclick='
-  document.getElementById("static5").style.display = "none";
-  document.getElementById("dynamic5").style.display = "";
-  save_image("gc_percent_hist_qc");
-  document.getElementById("gc_percent_hist_qccanvas").style.display = "";
-  document.getElementById("gc_percent_hist_qc").style.display = "none";'>
-</div>
-<div style='display: none;' id='dynamic5'>The image is currently static. You can right-click/save it. To enable dynamic image, please click the dynamic button
-<input type='button' value='dynamic' onclick='
-  document.getElementById("static5").style.display = "";
-  document.getElementById("dynamic5").style.display = "none";
-  document.getElementById("gc_percent_hist_qccanvas").style.display = "none";
-  document.getElementById("gc_percent_hist_qc").style.display = "";'>
-</div>
-<div><div id='gc_percent_hist_qc'></div></div>
-<input type='hidden' id='gc_data_qc' value='$gc_qc_data'>
-<img src='./Html/clear.gif' onload='draw_histogram_plot("gc_data_qc", "gc_percent_hist_qc", "% gc", "Number of Reads Post QC");'>~;
-  } else {
-    $html .= "<p><em>QC GC distribution histogram " . (@$gc_qc_bins ? "has insufficient data" : "not yet computed") . ".</em></p>";
-  }
-  $html .= "</div>";
+#   if (@$gc_raw_bins > 1) {
+#     my $gc_raw_data = join("~", map { $_->[0] .";;" . $_->[1] } @$gc_raw_bins);
+#     my $gc_raw_link = $self->chart_export_link($gc_raw_bins, 'upload_gc_hist');
+#     $html .= qq~<p>$gc_raw_link</p>
+# <div id='static4'>
+# The image is currently dynamic. To be able to right-click/save the image, please click the static button
+# <input type='button' value='static' onclick='
+#   document.getElementById("static4").style.display = "none";
+#   document.getElementById("dynamic4").style.display = "";
+#   save_image("gc_percent_hist_raw");
+#   document.getElementById("gc_percent_hist_rawcanvas").style.display = "";
+#   document.getElementById("gc_percent_hist_raw").style.display = "none";'>
+# </div>
+# <div style='display: none;' id='dynamic4'>The image is currently static. You can right-click/save it. To enable dynamic image, please click the dynamic button
+# <input type='button' value='dynamic' onclick='
+#   document.getElementById("static4").style.display = "";
+#   document.getElementById("dynamic4").style.display = "none";
+#   document.getElementById("gc_percent_hist_rawcanvas").style.display = "none";
+#   document.getElementById("gc_percent_hist_raw").style.display = "";'>
+# </div>
+# <div><div id='gc_percent_hist_raw'></div></div>
+# <input type='hidden' id='gc_data_raw' value='$gc_raw_data'>
+# <img src='./Html/clear.gif' onload='draw_histogram_plot("gc_data_raw", "gc_percent_hist_raw", "% gc", "Number of Reads Uploaded");'>~;
+#   } else {
+#     $html .= "<p><em>Raw GC distribution histogram " . (@$gc_raw_bins ? "has insufficient data" : "not yet computed") . ".</em></p>";
+#   }
+#   if (@$gc_qc_bins > 1) {
+#     my $gc_qc_data = join("~", map { $_->[0] .";;" . $_->[1] } @$gc_qc_bins);
+#     my $gc_qc_link = $self->chart_export_link($gc_qc_bins, 'postqc_gc_hist');
+#     $html .= qq~<p>$gc_qc_link</p>
+# <div id='static5'>
+# The image is currently dynamic. To be able to right-click/save the image, please click the static button
+# <input type='button' value='static' onclick='
+#   document.getElementById("static5").style.display = "none";
+#   document.getElementById("dynamic5").style.display = "";
+#   save_image("gc_percent_hist_qc");
+#   document.getElementById("gc_percent_hist_qccanvas").style.display = "";
+#   document.getElementById("gc_percent_hist_qc").style.display = "none";'>
+# </div>
+# <div style='display: none;' id='dynamic5'>The image is currently static. You can right-click/save it. To enable dynamic image, please click the dynamic button
+# <input type='button' value='dynamic' onclick='
+#   document.getElementById("static5").style.display = "";
+#   document.getElementById("dynamic5").style.display = "none";
+#   document.getElementById("gc_percent_hist_qccanvas").style.display = "none";
+#   document.getElementById("gc_percent_hist_qc").style.display = "";'>
+# </div>
+# <div><div id='gc_percent_hist_qc'></div></div>
+# <input type='hidden' id='gc_data_qc' value='$gc_qc_data'>
+# <img src='./Html/clear.gif' onload='draw_histogram_plot("gc_data_qc", "gc_percent_hist_qc", "% gc", "Number of Reads Post QC");'>~;
+#   } else {
+#     $html .= "<p><em>QC GC distribution histogram " . (@$gc_qc_bins ? "has insufficient data" : "not yet computed") . ".</em></p>";
+#   }
+#   $html .= "</div>";
 
-  # download
-  $html .= "<a name='download_ref'></a><h3>Download This Metagenome</h3>";
-  $html .= "<p>We provide download capabilities for the submitted sequences, metadata, and all files with results that are produced in the process of mobedac analysis on the <a target=_blank href='?page=Download&metagenome=$mgid'>download page for this metagenome</a>. This includes fasta files with annotations using the <a target=_blank href='http://blog.metagenomics.anl.gov/glossary-of-mg-rast-terms-and-concepts/#m5nr'>M5NR</a>.</p>";
-  $html .= "<p>We also provide access to the blat alignment summaries underlying our sequence analysis work on the <a target=_blank href='?page=Download&metagenome=$mgid'>download page</a>.</p>";
-  $html .= "<p>Please note: The graphs on this page allow downloading the underlying information as tables. The search results and most of the pie-charts allow selecting the fraction of sequences in an element to work with in the <a target=_blank href='http://blog.metagenomics.anl.gov/glossary-of-mg-rast-terms-and-concepts/#workbench'>workbench</a> feature on the <a target=_blank href='http://metagenomics.anl.gov?page=Analysis&metagenome=$mgid'>analysis page</a>.</p>";
+#   # download
+#   $html .= "<a name='download_ref'></a><h3>Download This Metagenome</h3>";
+#   $html .= "<p>We provide download capabilities for the submitted sequences, metadata, and all files with results that are produced in the process of mobedac analysis on the <a target=_blank href='?page=Download&metagenome=$mgid'>download page for this metagenome</a>. This includes fasta files with annotations using the <a target=_blank href='http://blog.metagenomics.anl.gov/glossary-of-mg-rast-terms-and-concepts/#m5nr'>M5NR</a>.</p>";
+#   $html .= "<p>We also provide access to the blat alignment summaries underlying our sequence analysis work on the <a target=_blank href='?page=Download&metagenome=$mgid'>download page</a>.</p>";
+#   $html .= "<p>Please note: The graphs on this page allow downloading the underlying information as tables. The search results and most of the pie-charts allow selecting the fraction of sequences in an element to work with in the <a target=_blank href='http://blog.metagenomics.anl.gov/glossary-of-mg-rast-terms-and-concepts/#workbench'>workbench</a> feature on the <a target=_blank href='http://metagenomics.anl.gov?page=Analysis&metagenome=$mgid'>analysis page</a>.</p>";
 
-  # MG search
-  $html .= qq~<a name='search_ref'></a>
-<h3>Search This Metagenome</h3>
-<p>Below searches return all predicted functions or organisms that contain the input text.</p>
-<input id='func_txt' type='text' />&nbsp;&nbsp;&nbsp;
-<button onclick='
-  var aText=document.getElementById("func_txt").value;
-  execute_ajax("search_stuff","func_div","type=func&metagenome=$mgid&text="+aText);'>Search Functions</button>
-<br><div id='func_div'></div><br>
-<input id='org_txt' type='text' />&nbsp;&nbsp;&nbsp;
-<button onclick='
-  var aText=document.getElementById("org_txt").value;
-  execute_ajax("search_stuff","org_div","type=org&metagenome=$mgid&text="+aText);'>Search Organisms</button>
-<br><div id='org_div'></div><br>~;
+#   # MG search
+#   $html .= qq~<a name='search_ref'></a>
+# <h3>Search This Metagenome</h3>
+# <p>Below searches return all predicted functions or organisms that contain the input text.</p>
+# <input id='func_txt' type='text' />&nbsp;&nbsp;&nbsp;
+# <button onclick='
+#   var aText=document.getElementById("func_txt").value;
+#   execute_ajax("search_stuff","func_div","type=func&metagenome=$mgid&text="+aText);'>Search Functions</button>
+# <br><div id='func_div'></div><br>
+# <input id='org_txt' type='text' />&nbsp;&nbsp;&nbsp;
+# <button onclick='
+#   var aText=document.getElementById("org_txt").value;
+#   execute_ajax("search_stuff","org_div","type=org&metagenome=$mgid&text="+aText);'>Search Organisms</button>
+# <br><div id='org_div'></div><br>~;
 
-  # metadata table
-  my $mdata = $mddb->get_metadata_for_table($job);
-  if (@$mdata > 0) {
-    my $mtable = $self->application->component('metadata_tbl');
-    $mtable->width(800);
-    $mtable->show_export_button({title => "Download this table", strip_html => 1});
+#   # metadata table
+#   my $mdata = $mddb->get_metadata_for_table($job);
+#   if (@$mdata > 0) {
+#     my $mtable = $self->application->component('metadata_tbl');
+#     $mtable->width(800);
+#     $mtable->show_export_button({title => "Download this table", strip_html => 1});
     
-    if ( scalar(@$mdata) > 25 ) {
-      $mtable->show_top_browse(1);
-      $mtable->show_bottom_browse(1);
-      $mtable->items_per_page(25);
-      $mtable->show_select_items_per_page(1); 
-    }   
-    $mtable->columns([ { name => 'Category', filter  => 1, sortable => 1, operator => 'combobox' },
-		       { name => 'Label', filter  => 1, sortable => 1 },
-		       { name => 'Value', filter  => 1, sortable => 1 }
-		     ]);
-    $mtable->data($mdata);
-    $html .= qq~<a name='meta_ref'></a>
-<h3>Metadata
-<a target=_blank href='http://blog.metagenomics.anl.gov/glossary-of-mg-rast-terms-and-concepts/#metadata' style='font-size:14px;padding-left:5px;'>[?]</a>
-<a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
-  if (this.innerHTML=="show") {
-    this.innerHTML = "hide";
-    document.getElementById("metadata_show").style.display = "";
-  } else {
-    document.getElementById("metadata_show").style.display = "none";
-    this.innerHTML = "show";
-  }'>show</a></h3>
-<div id='metadata_show' style='display: none;'>
-<p>The table below contains contextual metadata describing sample location, acquisition, library construction, sequencing using <a target=_blank href='http://gensc.org'>GSC</a> compliant metadata.</p>~ . $mtable->output . "</div>";
-  }
+#     if ( scalar(@$mdata) > 25 ) {
+#       $mtable->show_top_browse(1);
+#       $mtable->show_bottom_browse(1);
+#       $mtable->items_per_page(25);
+#       $mtable->show_select_items_per_page(1); 
+#     }   
+#     $mtable->columns([ { name => 'Category', filter  => 1, sortable => 1, operator => 'combobox' },
+# 		       { name => 'Label', filter  => 1, sortable => 1 },
+# 		       { name => 'Value', filter  => 1, sortable => 1 }
+# 		     ]);
+#     $mtable->data($mdata);
+#     $html .= qq~<a name='meta_ref'></a>
+# <h3>Metadata
+# <a target=_blank href='http://blog.metagenomics.anl.gov/glossary-of-mg-rast-terms-and-concepts/#metadata' style='font-size:14px;padding-left:5px;'>[?]</a>
+# <a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='
+#   if (this.innerHTML=="show") {
+#     this.innerHTML = "hide";
+#     document.getElementById("metadata_show").style.display = "";
+#   } else {
+#     document.getElementById("metadata_show").style.display = "none";
+#     this.innerHTML = "show";
+#   }'>show</a></h3>
+# <div id='metadata_show' style='display: none;'>
+# <p>The table below contains contextual metadata describing sample location, acquisition, library construction, sequencing using <a target=_blank href='http://gensc.org'>GSC</a> compliant metadata.</p>~ . $mtable->output . "</div>";
+#   }
   
-  # pubmed abstracts
-  if ($md_ext_ids->{pubmed}) {
-    my @ids = split(/, /, $md_ext_ids->{pubmed});
-    $html .= "<a name='pub_ref'></a><h3>Publication Abstracts";
-    $html .= "<span style='font-size:12px;padding-left:15px;'>[" . join(", ", map { "<a href='http://www.ncbi.nlm.nih.gov/pubmed/".$_."' target=_blank>".$_."</a>" } @ids) . "]</span>";
-    $html .= "<a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='if(this.innerHTML==\"show\"){this.innerHTML=\"hide\";document.getElementById(\"abstracts\").style.display=\"\";}else{document.getElementById(\"abstracts\").style.display=\"none\";this.innerHTML=\"show\"};'>show</a></h3><div id='abstracts' style='display: none;'>";
-    foreach my $id (@ids) {
-      $html .= $self->get_pubmed_abstract($id)."<br><br>";
-    }
-    $html .= "</div>";
-  }
+#   # pubmed abstracts
+#   if ($md_ext_ids->{pubmed}) {
+#     my @ids = split(/, /, $md_ext_ids->{pubmed});
+#     $html .= "<a name='pub_ref'></a><h3>Publication Abstracts";
+#     $html .= "<span style='font-size:12px;padding-left:15px;'>[" . join(", ", map { "<a href='http://www.ncbi.nlm.nih.gov/pubmed/".$_."' target=_blank>".$_."</a>" } @ids) . "]</span>";
+#     $html .= "<a style='cursor:pointer;clear:both;font-size:small;padding-left:10px;' onclick='if(this.innerHTML==\"show\"){this.innerHTML=\"hide\";document.getElementById(\"abstracts\").style.display=\"\";}else{document.getElementById(\"abstracts\").style.display=\"none\";this.innerHTML=\"show\"};'>show</a></h3><div id='abstracts' style='display: none;'>";
+#     foreach my $id (@ids) {
+#       $html .= $self->get_pubmed_abstract($id)."<br><br>";
+#     }
+#     $html .= "</div>";
+#   }
 
   # bottom padding
   $html .= "<br><br><br><br>";
