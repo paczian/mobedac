@@ -81,6 +81,10 @@ sub output {
   my $html = qq~<style>h3 {margin-top: 0px;}</style><div style='display: none;' id='uifo'>~.$json->encode($ufo).qq~</div><div style="width: 960px;" id="upload_area">
       <div>~;
 
+  if ($cgi->param('test')) {
+      my $success = $self->submit_to_vamps($libraries);
+  }
+
   if ($cgi->param('create_job')) {
     $html .= "<div class='well'>";
     my $silent = $cgi->param('MGRAST') ? 0 : 1;
