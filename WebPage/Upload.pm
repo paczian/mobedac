@@ -82,7 +82,7 @@ sub output {
       <div>~;
 
   if ($cgi->param('test')) {
-      my $success = $self->submit_to_vamps($libraries);
+      my $success = $self->submit_to_vamps();
   }
 
   if ($cgi->param('create_job')) {
